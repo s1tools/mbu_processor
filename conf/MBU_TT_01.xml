@@ -1,0 +1,54 @@
+<Ipf_Task_Table xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance">
+	<Processor_Name>MBU_PROC</Processor_Name>
+	<Version>01.00</Version>
+	<Test>Yes</Test>
+	<Min_Disk_Space units="MB">10240</Min_Disk_Space>
+	<Max_Time units="sec">0</Max_Time>
+	<List_of_Cfg_Files>
+		<Cfg_Files>
+			<Version>01.00</Version>
+			<File_Name>/usr/local/components/MBU/conf/mbu_s1_pdgs.conf</File_Name>
+		</Cfg_Files>
+	</List_of_Cfg_Files>
+	<List_of_Pools count="1">
+		<Pool>
+			<Detached>false</Detached>
+			<Killing_Signal>15</Killing_Signal>
+			<List_of_Tasks count="1">
+				<Task>
+					<Name>MBU</Name>
+					<Version>01.00</Version>
+					<Critical>true</Critical>
+					<Criticality_Level>2</Criticality_Level>
+					<File_Name>/usr/local/components/MBU/bin/mbu_processor</File_Name>
+					<List_of_Inputs count="1">
+						<Input>
+							<Mode>ALWAYS</Mode>
+							<Mandatory>Yes</Mandatory>
+							<List_of_Alternatives count="1">
+								<Alternative>
+									<Order>1</Order>
+									<Origin>DB</Origin>
+									<Retrieval_Mode>LatestValCover</Retrieval_Mode>
+									<T0>7200</T0>
+									<T1>0</T1>
+									<File_Type>WV_OCN__2S</File_Type>
+									<File_Name_Type>Physical</File_Name_Type>
+								</Alternative>
+							</List_of_Alternatives>
+						</Input>
+					</List_of_Inputs>
+					<List_of_Outputs count="1">
+						<Output>
+							<Destination>DB</Destination>
+							<Mandatory>Yes</Mandatory>
+							<Type>REP_MBU_</Type>
+							<File_Name_Type>Regexp</File_Name_Type>
+						</Output>
+					</List_of_Outputs>
+					<List_of_Breakpoints count="0" />
+				</Task>
+			</List_of_Tasks>
+		</Pool>
+	</List_of_Pools>
+</Ipf_Task_Table>

@@ -1,0 +1,17 @@
+#code|abbreviation|type|name|unit|scale|reference|width|crex_unit|crex_scale|crex_width
+003192|crossTrackEstimationAreaSize|long|Cross-track estimation area size|M|0|5000|16 
+003193|alongTrackEstimationAreaSize|long|Along-track estimation area size|M|0|5000|16 
+005238|stripmapIdentifier|long|Stripmap Identifier|Numeric|0|0|16
+005239|rangeSize|long|Range Size|Numeric|0|0|8
+005240|azimuthSize|long|Azimuth Size|Numeric|0|0|8
+005241|rangeIndex|long|Range Index|Numeric|0|0|8
+005242|azimuthIndex|long|Azimuth Index|Numeric|0|0|8
+025208|rangeCutOffWavelength|long|range cut-off wavelength|M|0|1|9
+040214|partitionNumber|long|Partition number|Numeric|0|0|4
+040215|SlcImageIntensity|long|Single look complex image intensity|Numeric|0|-25|4
+040216|SlcImageSkewness|long|Single look complex image skewness|Numeric|2|1|13
+040217|SlcImageKurtosis|long|Single look complex image kurtosis|Numeric|2|1|13
+040218|SlcImageVariance|long|Single look complex image variance|Numeric|2|1|13
+041192|lenghtOfSwellWaves|double|Lenght of swell waves|Numeric|2|100|17
+041193|confidenceFlagOfSwellWaveSpectra|table|Confidence flag of swell wave spectra|CODE TABLE|0|0|2
+041194|ambiguityRemovalFactorForWavePartition|double|Ambiguity removal factor fro wave partitio|Numeric|5|-100000|17

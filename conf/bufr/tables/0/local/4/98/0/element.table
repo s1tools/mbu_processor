@@ -1,0 +1,23 @@
+#code|abbreviation|type|name|unit|scale|reference|width|crex_unit|crex_scale|crex_width
+003192|crossTrackEstimationAreaSize|long|Cross-track estimation area size|M|0|5000|16 
+003193|alongTrackEstimationAreaSize|long|Along-track estimation area size|M|0|5000|16 
+005238|stripmapIdentifier|long|Stripmap Identifier|Numeric|0|0|16
+005239|numberOfSpectraInRangeDirection|long|Number of spectra in range direction|Numeric|0|0|8
+005240|numberOfSpectraInAzimuthalDirection|long|Number of spectra in azimuthal direction|Numeric|0|0|8
+005241|indexInRangeDirection|long|Index In Range Direction|Numeric|0|0|8
+005242|indexInAzimuthalDirection|long|Index In Azimuthal Direction|Numeric|0|0|8
+025208|rangeCutOffWavelength|long|range cut-off wavelength|M|0|1|9
+040215|slcImageIntensity|long|Single look complex image intensity|Numeric|0|-25|5
+040216|slcImageSkewness|double|Single look complex image skewness|Numeric|2|1|13
+040217|slcImageKurtosis|double|Single look complex image kurtosis|Numeric|2|1|13
+040218|slcImageVariance|double|Single look complex image variance|Numeric|2|1|13
+042192|dominantSwellWaveDirectionOfSpectralPartition|long|Dominant Wave Direction Of Spectral Partition|degree|0|0|9
+042193|significantSwellWaveHeightOfSpectralPartiton|double|Significant Wave Height Of Spectral Partiton|M|1|0|9
+042194|dominantSwellWavelenghtOfSpectralPartition|double|dominantWavelenghtOfSpectralPartition|M|2|100|17
+042195|confidenceOfInversionForEachPartitionOfSwellWaveSpectra|table|confidenceOfInversionForEachPartitionOfSwellWaveSpectra|CODE TABLE|0|0|4
+042196|ambiguityRemovalFactorForSwellWavePartition|double|Ambiguity removal factor fro wave partitio|Numeric|5|-100000|18
+042197|waveAge|double|Wave Age|Numeric|2|1|8
+042198|shortestOceanWavelenghtSpectral|double|Shortest Ocean Wavelenght Spectral|M|2|0|16
+042199|nonlinearInverseSpectralWidth|double|Nonlinear inverse spectral width|M|2|0|16
+042200|binPartitionsReference|double|Bin partitions reference|Numeric|0|0|8
+042201|partitionNumber|long|Partition number|Numeric|0|1|4
