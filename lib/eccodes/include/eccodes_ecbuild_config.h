@@ -17,7 +17,7 @@
 #define ECBUILD_VERSION_STR "2.6.0"
 #endif
 #ifndef ECBUILD_MACROS_DIR
-#define ECBUILD_MACROS_DIR  "/usr/local/components/MBU-1.0/lib/eccodes/eccodes-2.1.0-Source/cmake"
+#define ECBUILD_MACROS_DIR  "/data/GIOVANNA/ECCODES/eccodes-2.1.0-Source/cmake"
 #endif
 
 /* cpu arch info */
@@ -157,7 +157,7 @@
 #define ECCODES_OS_VERSION       "2.6.32-642.el6.x86_64"
 #define ECCODES_SYS_PROCESSOR    "x86_64"
 
-#define ECCODES_BUILD_TIMESTAMP  "20180104164741"
+#define ECCODES_BUILD_TIMESTAMP  "20180510085855"
 #define ECCODES_BUILD_TYPE       "RelWithDebInfo"
 
 #define ECCODES_C_COMPILER_ID      "GNU"
@@ -174,13 +174,13 @@
 
 /* Needed for finding per package config files */
 
-#define ECCODES_INSTALL_DIR       "/usr/local/components/MBU-1.0/lib/eccodes"
-#define ECCODES_INSTALL_BIN_DIR   "/usr/local/components/MBU-1.0/lib/eccodes/bin"
-#define ECCODES_INSTALL_LIB_DIR   "/usr/local/components/MBU-1.0/lib/eccodes/lib"
-#define ECCODES_INSTALL_DATA_DIR  "/usr/local/components/MBU-1.0/lib/eccodes/share/eccodes"
+#define ECCODES_INSTALL_DIR       "/usr/local/components/MBU/lib/eccodes"
+#define ECCODES_INSTALL_BIN_DIR   "/usr/local/components/MBU/lib/eccodes/bin"
+#define ECCODES_INSTALL_LIB_DIR   "/usr/local/components/MBU/lib/eccodes/lib"
+#define ECCODES_INSTALL_DATA_DIR  "/usr/local/components/MBU/lib/eccodes/share/eccodes"
 
-#define ECCODES_DEVELOPER_SRC_DIR "/usr/local/components/MBU-1.0/lib/eccodes/eccodes-2.1.0-Source"
-#define ECCODES_DEVELOPER_BIN_DIR "/usr/local/components/MBU-1.0/lib/eccodes/eccodes-2.1.0-Source/build"
+#define ECCODES_DEVELOPER_SRC_DIR "/data/GIOVANNA/ECCODES/eccodes-2.1.0-Source"
+#define ECCODES_DEVELOPER_BIN_DIR "/data/GIOVANNA/ECCODES/build"
 
 #define EC_HAVE_FORTRAN
 

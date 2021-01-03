@@ -1,6 +1,6 @@
 <Ipf_Task_Table xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance">
 	<Processor_Name>MBU_PROC</Processor_Name>
-	<Version>01.00</Version>
+	<Version>01.10</Version>
 	<Test>Yes</Test>
 	<Min_Disk_Space units="MB">10240</Min_Disk_Space>
 	<Max_Time units="sec">0</Max_Time>
@@ -20,7 +20,7 @@
 					<Version>01.00</Version>
 					<Critical>true</Critical>
 					<Criticality_Level>2</Criticality_Level>
-					<File_Name>/usr/local/components/MBU/bin/mbu_processor</File_Name>
+					<File_Name>/usr/local/components/MBU/bin/MBUprocessor</File_Name>
 					<List_of_Inputs count="1">
 						<Input>
 							<Mode>ALWAYS</Mode>

@@ -3,7 +3,7 @@
 
 git_tag=
 
-prefix=/usr/local/components/MBU-1.0/lib/eccodes
+prefix=/usr/local/components/MBU/lib/eccodes
 exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include

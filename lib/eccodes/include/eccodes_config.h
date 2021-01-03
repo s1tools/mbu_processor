@@ -21,7 +21,7 @@
 #define ECCODES_MINOR_VERSION    1
 #define ECCODES_REVISION_VERSION 0
 
-#define ECCODES_DEFINITION_PATH      "/usr/local/components/MBU-1.0/lib/eccodes/share/eccodes/definitions"
+#define ECCODES_DEFINITION_PATH      "/usr/local/components/MBU/lib/eccodes/share/eccodes/definitions"
 
 #ifdef EC_HAVE_C_INLINE
 #define GRIB_INLINE inline
@@ -34,7 +34,7 @@
 #define GRIB_PTHREADS       0
 #define GRIB_OMP_THREADS    0
 
-#define ECCODES_SAMPLES_PATH    "/usr/local/components/MBU-1.0/lib/eccodes/share/eccodes/samples"
+#define ECCODES_SAMPLES_PATH    "/usr/local/components/MBU/lib/eccodes/share/eccodes/samples"
 
 #define GRIB_TIMER 0
 
