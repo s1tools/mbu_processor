@@ -215,6 +215,7 @@ class  netcdfToBufr(object):
             dum= self.dic_var_value['oswPartitions'].astype(np.float32)
             dataOswPartitions=dum.data
             dataOswPartitions[dataOswPartitions == -128] = 255
+            dataOswPartitions[dataOswPartitions == -1] = 255
             self.dic_var_value['oswPartitions']=dataOswPartitions
 
         #print (self.dic_var_value['oswPartitions'].shape)    
