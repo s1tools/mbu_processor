@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-ECCODES_DEFINITION_PATH=$PRJ/conf:/usr/local/components/MBU/lib/eccodes/share/eccodes/definitions
-
-python2.6 /usr/local/components/MBU/lib/converterOCNtoBUFR.py $1
