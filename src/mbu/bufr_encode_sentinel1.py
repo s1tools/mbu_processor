@@ -1,16 +1,3 @@
-#!/usr/bin/python
-# Copyright 2005-2016 ECMWF.
-#
-# This software is licensed under the terms of the Apache Licence Version 2.0
-# which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
-#
-# In applying this licence, ECMWF does not waive the privileges and immunities
-# granted to it by virtue of its status as an intergovernmental organisation
-# nor does it submit to any jurisdiction.
-#
-
-# Description: How to encode Sentinel 1 netCDF dataset into BUFR
-
 import argparse
 import logging
 import os
@@ -24,23 +11,24 @@ from netCDF4 import Dataset
 import mbu.config
 import eccodes as ecc
 
-alongTrackResolution = mbu.config.ini.get('ocnVariable', 'alongTrackResolution')
+along_track_resolution = mbu.config.ini.get('ocnVariable', 'alongTrackResolution')
 
-unexpandedDescriptors = [1007, 2019, 1096, 25061, 5071, 5072, 5073, 5074, 5075, 5040, 8075, 301011, 301013, 301021,
-                         1012, 7002, 22063, 8012, 2104, 21105, 42008, 25103, 25104, 25105, 25106, 25107, 25108, 11001,
-                         11002, 42006, 21030, 201130, 202129, 22022, 202000, 201000, 2026, 2027, 3025, 3026, 40039,
-                         40040, 40041, 40042, 2111, 25014, 25189, 106000, 31001, 42010, 42001, 42002, 42003, 42004,
-                         42005, 113000, 31001, 5030, 201130, 6030, 201000, 201131, 21135, 201000, 21136, 201130, 22161,
-                         201000, 42009, 42007]
+unexpanded_descriptors = [1007, 2019, 1096, 25061, 5071, 5072, 5073, 5074, 5075, 5040, 8075, 301011, 301013, 301021,
+                          1012, 7002, 22063, 8012, 2104, 21105, 42008, 25103, 25104, 25105, 25106, 25107, 25108, 11001,
+                          11002, 42006, 21030, 201130, 202129, 22022, 202000, 201000, 2026, 2027, 3025, 3026, 40039,
+                          40040, 40041, 40042, 2111, 25014, 25189, 106000, 31001, 42010, 42001, 42002, 42003, 42004,
+                          42005, 113000, 31001, 5030, 201130, 6030, 201000, 201131, 21135, 201000, 21136, 201130, 22161,
+                          201000, 42009, 42007]
 
 
-class netcdfToBufr(object):
-    def __init__(self, nc_filename='#', pathOutput='#', crc='#'):
+class NetcdfToBufr(object):
+    def __init__(self, nc_filename='#', path_output='#', crc='#'):
+        self.delayed_descriptor_replication = None
         self.nc_filename = nc_filename
 
-        if self.nc_filename != '#' and pathOutput != '#' and crc != '#':
+        if self.nc_filename != '#' and path_output != '#' and crc != '#':
             logging.info("processing %s" % self.nc_filename)
-            self.output_filename = pathOutput + '/' + (
+            self.output_filename = path_output + '/' + (
                 os.path.basename(self.nc_filename).replace('.nc', '_' + crc + '.bufr')).replace('ocn', 'mbu')
 
         self.fileBasename = os.path.basename(nc_filename)
@@ -103,11 +91,11 @@ class netcdfToBufr(object):
 
         # alongTrackResolution : set it to 4.8m instead of 5m
         logging.info('set alongTrackResolution')
-        self.alongTrackResolution = alongTrackResolution
+        self.alongTrackResolution = along_track_resolution
 
         # TODO: define an env variable to be the seed file . E.g. S1_OCN2BUFR_SEED and read the env variable
-        prjFolder = os.path.dirname(os.path.abspath(__file__))
-        seed_filename = os.path.join(prjFolder, 'conf', 'seed.bufr')
+        prj_folder = os.path.dirname(os.path.abspath(__file__))
+        seed_filename = os.path.join(prj_folder, 'conf', 'seed.bufr')
 
         self.fbufrin = open(seed_filename, 'rb')
         self.fbufrout = open(self.output_filename, 'wb')
@@ -117,26 +105,26 @@ class netcdfToBufr(object):
             logging.error('Not able to codes_bufr_new_from_file')
             sys.exit()
 
-    def oswNetcdf2bufr(self):
-        self.delayedDescriptorReplication = [len(self.dic_dim_value['oswPartitions']),
-                                             len(self.dic_dim_value['oswAngularBinSize'])]
-        ecc.codes_set_array(self.bufr, 'inputDelayedDescriptorReplicationFactor', self.delayedDescriptorReplication)
+    def osw_netcdf2bufr(self):
+        self.delayed_descriptor_replication = [len(self.dic_dim_value['oswPartitions']),
+                                               len(self.dic_dim_value['oswAngularBinSize'])]
+        ecc.codes_set_array(self.bufr, 'inputDelayedDescriptorReplicationFactor', self.delayed_descriptor_replication)
         ecc.codes_set(self.bufr, 'compressedData', 1)
         ecc.codes_set(self.bufr, 'numberOfSubsets', len(self.dic_dim_value['oswWavenumberBinSize']))
-        firstMeasurementTime = parse_date(self.dic_attr_value['firstMeasurementTime'], ignoretz=True)
-        ecc.codes_set(self.bufr, 'typicalYear', firstMeasurementTime.year)
-        ecc.codes_set(self.bufr, 'typicalMonth', firstMeasurementTime.month)
-        ecc.codes_set(self.bufr, 'typicalDay', firstMeasurementTime.day)
-        ecc.codes_set(self.bufr, 'typicalHour', firstMeasurementTime.hour)
-        ecc.codes_set(self.bufr, 'typicalMinute', firstMeasurementTime.minute)
-        ecc.codes_set(self.bufr, 'typicalSecond', firstMeasurementTime.second)
+        first_measurement_time = parse_date(self.dic_attr_value['firstMeasurementTime'], ignoretz=True)
+        ecc.codes_set(self.bufr, 'typicalYear', first_measurement_time.year)
+        ecc.codes_set(self.bufr, 'typicalMonth', first_measurement_time.month)
+        ecc.codes_set(self.bufr, 'typicalDay', first_measurement_time.day)
+        ecc.codes_set(self.bufr, 'typicalHour', first_measurement_time.hour)
+        ecc.codes_set(self.bufr, 'typicalMinute', first_measurement_time.minute)
+        ecc.codes_set(self.bufr, 'typicalSecond', first_measurement_time.second)
 
         logging.info('unexpandedDescriptors and BufrTemplate can be set alternatively')
         logging.info('to choose the template for the BUFR message')
 
         ecc.codes_set(self.bufr, 'masterTablesVersionNumber', 27)
         ecc.codes_set(self.bufr, 'localTablesVersionNumber', 4)
-        ecc.codes_set_array(self.bufr, 'unexpandedDescriptors', unexpandedDescriptors)
+        ecc.codes_set_array(self.bufr, 'unexpandedDescriptors', unexpanded_descriptors)
         ecc.codes_set(self.bufr, 'satelliteIdentifier', self.missionCode)
         ecc.codes_set(self.bufr, 'satelliteInstruments', 151)
         ecc.codes_set(self.bufr, 'stationAcquisition', self.dic_attr_value['processingCenter'][:3])
@@ -148,12 +136,12 @@ class netcdfToBufr(object):
         ecc.codes_set_long(self.bufr, 'indexInAzimuthalDirection', 1)
         ecc.codes_set(self.bufr, 'orbitNumber', int(self.dic_attr_value['sourceProduct'].split('_')[8]))
         ecc.codes_set(self.bufr, 'orbitQualifier', self.orbitQualifier)
-        ecc.codes_set(self.bufr, 'year', firstMeasurementTime.year)
-        ecc.codes_set(self.bufr, 'month', firstMeasurementTime.month)
-        ecc.codes_set(self.bufr, 'day', firstMeasurementTime.day)
-        ecc.codes_set(self.bufr, 'hour', firstMeasurementTime.hour)
-        ecc.codes_set(self.bufr, 'minute', firstMeasurementTime.minute)
-        ecc.codes_set(self.bufr, 'second', firstMeasurementTime.second)
+        ecc.codes_set(self.bufr, 'year', first_measurement_time.year)
+        ecc.codes_set(self.bufr, 'month', first_measurement_time.month)
+        ecc.codes_set(self.bufr, 'day', first_measurement_time.day)
+        ecc.codes_set(self.bufr, 'hour', first_measurement_time.hour)
+        ecc.codes_set(self.bufr, 'minute', first_measurement_time.minute)
+        ecc.codes_set(self.bufr, 'second', first_measurement_time.second)
         ecc.codes_set_double_array(self.bufr, 'latitude', self.dic_var_value['oswLat'][0])
         ecc.codes_set_double_array(self.bufr, 'longitude', self.dic_var_value['oswLon'][0])
         ecc.codes_set_double_array(self.bufr, 'directionOfMotionOfMovingObservingPlatform',
@@ -194,31 +182,31 @@ class netcdfToBufr(object):
             ecc.codes_set(self.bufr, "#%d#partitionNumber" % (p + 1), int(p + 1))
 
             value = float(self.dic_var_value['oswDirmet'][0][0][p])
-            if value == -999: value = 511
+            # if value == -999: value = 511
             ecc.codes_set(self.bufr, '#%d#dominantSwellWaveDirectionOfSpectralPartition' % (p + 1),  value)
 
             value = float(self.dic_var_value['oswHs'][0][0][p])
-            if value == -999: value = 51.1
+            # if value == -999: value = 51.1
             ecc.codes_set(self.bufr, '#%d#significantSwellWaveHeightOfSpectralPartition' % (p + 1), value)
 
             value = float(self.dic_var_value['oswWl'][0][0][p])
-            if value == -999: value = 1311.71
+            # if value == -999: value = 1311.71
             ecc.codes_set(self.bufr, '#%d#dominantSwellWavelengthOfSpectralPartition' % (p + 1), value)
 
             value = float(self.dic_var_value['oswIconf'][0][0][p])
-            if value == -999: value = 15
+            # if value == -999: value = 15
             ecc.codes_set(self.bufr, '#%d#confidenceOfInversionForEachPartitionOfSwellWaveSpectra' % (p + 1), value)
 
             value = float(self.dic_var_value['oswAmbiFac'][0][0][p])
-            if value == -999: value = 1.62143
+            # if value == -999: value = 1.62143
             ecc.codes_set(self.bufr, '#%d#ambiguityRemovalFactorForSwellWavePartition' % (p + 1), value)
 
         if np.ma.is_masked(self.dic_var_value['oswPartitions']):
             dum = self.dic_var_value['oswPartitions'].astype(np.float32)
-            dataOswPartitions = dum.data
-            dataOswPartitions[dataOswPartitions == -128] = 255
-            dataOswPartitions[dataOswPartitions == -1] = 255
-            self.dic_var_value['oswPartitions'] = dataOswPartitions
+            data_osw_partitions = dum.data
+            data_osw_partitions[data_osw_partitions == -128] = 255
+            data_osw_partitions[data_osw_partitions == -1] = 255
+            self.dic_var_value['oswPartitions'] = data_osw_partitions
 
         for a in range(len(self.dic_dim_value['oswAngularBinSize'])):
             ecc.codes_set(self.bufr, "#%d#directionSpectral" % (a + 1), int(self.dic_var_value['oswPhi'][a]))
@@ -262,11 +250,11 @@ def cmdline():
             print('Usage: {0} nc_input  bufr_out crc'.format(sys.argv[0]), file=sys.stderr)
             sys.exit(1)
         nc_filename = args.nc2bufr[0]
-        outputDir = args.nc2bufr[1]
+        output_dir = args.nc2bufr[1]
         crc = args.nc2bufr[2]
         try:
-            obj = netcdfToBufr(nc_filename, outputDir, crc)
-            output_filename = obj.oswNetcdf2bufr()
+            obj = NetcdfToBufr(nc_filename, output_dir, crc)
+            obj.osw_netcdf2bufr()
 
         except ecc.CodesInternalError as err:
             if args.verbose:

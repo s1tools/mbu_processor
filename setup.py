@@ -22,7 +22,6 @@ setup(name='Sentinel1_MBU_Processor',
       zip_safe=False,
       # dependency_links = ["."],
       install_requires=['netCDF4',
-                        'lxml',
                         'numpy',
                         ],
       entry_points={

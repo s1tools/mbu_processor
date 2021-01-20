@@ -1,14 +1,3 @@
-#!/usr/bin/python
-########################################################################
-# Copyright (C) 2016 SERCO SpA                                         #
-# Gianluca Sabella gianluca.sabella@gmail.com                          #
-# Giovanna Palumbo giovanna.palumbo@serco.com                          #
-#                                                                      #
-# This file is part of OCN to BURF Processor Project                   #
-#                                                                      #
-# OCN to BURF Processor project can not be copied and/or distributed   #
-# without the express permission of the authors.                       #
-########################################################################
 import logging
 import os
 import pprint
@@ -18,8 +7,8 @@ import mbu.bufr_encode_sentinel1
 
 
 class JobOrder(object):
-    def __init__(self, filenameJO='#'):
-        self.filenameJO = filenameJO
+    def __init__(self, filename_jo='#'):
+        self.filenameJO = filename_jo
         self.treeJobOrder = xml.etree.ElementTree.parse(self.filenameJO)
         self.Inputs = dict()
         self.Outputs = dict()
@@ -27,7 +16,7 @@ class JobOrder(object):
         self.timeSensing = dict()
         pass
 
-    def readInputs(self):
+    def read_inputs(self):
         self.Inputs['count_ListOfInputs'] = str(
             self.treeJobOrder.find(".//List_of_Inputs/Input/List_of_File_Names").get('count'))
         # if the input OCN is one
@@ -35,18 +24,18 @@ class JobOrder(object):
         self.Inputs['filename'] = self.treeJobOrder.find(".//List_of_Inputs/Input/List_of_File_Names/File_Name").text
         return self.Inputs
 
-    def readOutput(self):
+    def read_output(self):
         self.Outputs['count_ListOfOutputs'] = str(self.treeJobOrder.find(".//List_of_Outputs").get('count'))
         self.Outputs['fileType'] = self.treeJobOrder.find(".//List_of_Outputs/Output/File_Type").text
         self.Outputs['filename'] = os.path.dirname(self.treeJobOrder.find(".//List_of_Outputs/Output/File_Name").text)
         return self.Outputs
 
-    def readLogLevel(self):
+    def read_log_level(self):
         self.LogLevel['Stdout_Log_Level'] = self.treeJobOrder.find(".//Stdout_Log_Level").text
         self.LogLevel['Stderr_Log_Level'] = self.treeJobOrder.find(".//Stderr_Log_Level").text
         return self.LogLevel
 
-    def readTimeSensing(self):
+    def read_time_sensing(self):
         self.timeSensing['Start'] = self.treeJobOrder.find(".//Sensing_Time/Start").text
         self.timeSensing['Stop'] = self.treeJobOrder.find(".//Sensing_Time/Stop").text
         return self.timeSensing
@@ -57,7 +46,7 @@ class OCNProduct(object):
         self.ocnProduct = filename
         self.treeManifestOcnProduct = xml.etree.ElementTree.parse(self.ocnProduct + '/manifest.safe')
 
-        self.listManifest = dict()
+        self.list_manifest = dict()
         self.namespace = {'s1sarl2': "http://www.esa.int/safe/sentinel-1.0/sentinel-1/sar/level-2",
                           'safe': "http://www.esa.int/safe/sentinel-1.0",
                           's1': "http://www.esa.int/safe/sentinel-1.0/sentinel-1",
@@ -65,84 +54,81 @@ class OCNProduct(object):
                           's1sarl1': "http://www.esa.int/safe/sentinel-1.0/sentinel-1/sar/level-1"
                           }
 
-    def parseManifest(self):
+    def parse_manifest(self):
         # filename netcdf
-        self.listManifest['ntcdfFilename'] = list()
+        self.list_manifest['ntcdfFilename'] = list()
 
-        fileLocation = self.treeManifestOcnProduct.findall('.//dataObjectSection/dataObject/byteStream/fileLocation')
+        file_location = self.treeManifestOcnProduct.findall('.//dataObjectSection/dataObject/byteStream/fileLocation')
         root = self.treeManifestOcnProduct.getroot()
-        for iNC in fileLocation:
+        for iNC in file_location:
             if os.path.splitext(iNC.get('href'))[1] == '.nc':
-                self.listManifest['ntcdfFilename'].append(self.ocnProduct + iNC.get('href')[1:])
+                self.list_manifest['ntcdfFilename'].append(self.ocnProduct + iNC.get('href')[1:])
 
         logging.info('listManifest: ')
-        logging.info(pprint.pformat(self.listManifest))
-        return self.listManifest
+        logging.info(pprint.pformat(self.list_manifest))
+        return self.list_manifest
 
 
 class Processor(object):
-    def __init__(self, fileInput='#'):
-        logging.info("libProcessor ")
-        self.jo = JobOrder(fileInput['inputFilenameJO'])
-        self.listJobOrder = dict()
-        self.listOutputBUFR = dict()
-        self.listManifest = dict()
-        self.errorProductConvert = list()
+    def __init__(self, file_input):
+        logging.info("Processor ")
+        self.jo = JobOrder(file_input['inputFilenameJO'])
+        self.job_order = dict()
+        self.output_bufr = dict()
+        self.manifest = dict()
+        self.error_product_convert = list()
         # get .LIST in the working dir
-        self.listfile = open(fileInput['filenameList'], "a")
+        self.listfile = open(file_input['filenameList'], "a")
+        self.path_output_from_job_order = None
+        self.ocn_product = None
 
-    def parseJO(self):
+    def parse_job_order(self):
         logging.info("parseJO ")
-        self.listJobOrder['input'] = self.jo.readInputs()
-        self.listJobOrder['output'] = self.jo.readOutput()
+        self.job_order['input'] = self.jo.read_inputs()
+        self.job_order['output'] = self.jo.read_output()
         # logger
         logging.info('listJobOrder: ')
-        logging.info(pprint.pformat(self.listJobOrder))
+        logging.info(pprint.pformat(self.job_order))
 
-    def startCore(self):
+    def start_core(self):
         logging.info("startCore ")
         # extract the path Output from JobOrder
-        self.pathOutputJO = self.listJobOrder['output']['filename']
+        self.path_output_from_job_order = self.job_order['output']['filename']
 
-        ocnSAFEproduct = self.listJobOrder['input']['filename']
+        ocn_saf_eproduct = self.job_order['input']['filename']
 
-        self.listOutputBUFR['burfProducts'] = list()
-        self.ocnProduct = OCNProduct(ocnSAFEproduct)
-        self.listManifest = self.ocnProduct.parseManifest()
-        crcOCNproduct = os.path.basename(ocnSAFEproduct)[63:67]
+        self.output_bufr['burfProducts'] = list()
+        self.ocn_product = OCNProduct(ocn_saf_eproduct)
+        self.manifest = self.ocn_product.parse_manifest()
+        crc_oc_nproduct = os.path.basename(ocn_saf_eproduct)[63:67]
         # for each nc input   save the bufr in self.listOutputBUFR
-        for iinputNETCDF in self.listManifest['ntcdfFilename']:
-
-            # print iinputNETCDF
-            logging.info(iinputNETCDF)
+        for filename in self.manifest['ntcdfFilename']:
+            logging.info(filename)
             try:
-
-                nc_filename = iinputNETCDF
-
-                pathOutput = self.pathOutputJO
-                crc = crcOCNproduct
-                obj_nc2bufr = mbu.bufr_encode_sentinel1.netcdfToBufr(iinputNETCDF, pathOutput, crc)
-                encodeOCNtoBUFR = obj_nc2bufr.oswNetcdf2bufr()
+                path_output = self.path_output_from_job_order
+                crc = crc_oc_nproduct
+                obj_nc2bufr = mbu.bufr_encode_sentinel1.NetcdfToBufr(filename, path_output, crc)
+                encode_ocn_to_bufr = obj_nc2bufr.osw_netcdf2bufr()
                 # print encodeOCNtoBUFR
-                self.listOutputBUFR['burfProducts'].append(encodeOCNtoBUFR)
+                self.output_bufr['burfProducts'].append(encode_ocn_to_bufr)
             except Exception:
-
-                logging.error('error with product= ' + iinputNETCDF)
+                logging.error('error with product= ' + filename)
                 logging.error('exception', exc_info=True)
-                self.errorProductConvert.append(iinputNETCDF)
+                self.error_product_convert.append(filename)
 
-    def prepareOutputs(self):
+    def prepare_outputs(self):
         logging.info("prepareOutputs ")
         # create .LIST
-        filenameLIST = self.pathOutputJO + '/' + os.path.basename(os.path.normpath(self.pathOutputJO)) + '.LIST'
-        listfile = open(filenameLIST, "a")
+        filename_list = os.path.join(self.path_output_from_job_order,
+                                     os.path.basename(os.path.normpath(self.path_output_from_job_order)) + '.LIST')
+        listfile = open(filename_list, "a")
         count = 0
-        for ibufr in self.listOutputBUFR['burfProducts']:
+        for ibufr in self.output_bufr['burfProducts']:
             listfile.write(os.path.basename(ibufr) + "\n")
             count = count + 1
 
         logging.info('listOutputBUFR: ')
-        logging.info(pprint.pformat(self.listOutputBUFR))
+        logging.info(pprint.pformat(self.output_bufr))
 
 
 if __name__ == "__main__":
