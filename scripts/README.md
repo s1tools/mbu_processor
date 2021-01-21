@@ -53,7 +53,7 @@ docker run -v /path/to/MBUProcess:/src \
 	   bash
 ```
 
-###docker-compose
+### docker-compose
 
 
 initialise the docker-compose file
@@ -77,7 +77,7 @@ build rpm
 
 
 
-###only docker
+### only docker
 
 
 ```
@@ -95,7 +95,7 @@ docker run -v /path/to/MBUProcess:/src \
 ```
 RPMS must copyied some else at each steps because these process overwrite the results
 
-###docker-compose
+### docker-compose
 
 
 initialise the docker-compose file first if not done
