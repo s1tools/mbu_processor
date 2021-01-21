@@ -18,10 +18,11 @@ def cmdline():
     process_name = 'BUFR_ProcMain'
 
     file_input = dict()
-
-    if "ECCODES_DEFINITION_PATH" not in os.environ:
-        os.environ["ECCODES_DEFINITION_PATH"] = ":".join([os.path.join(mbu.__file__, "conf"),
-                                                          f"/usr/local/components/MBU-{VERSION}/share/eccodes_MBU1.2/definitions"])
+    env_var = "ECCODES_DEFINITION_PATH"
+    if env_var not in os.environ:
+        os.environ[env_var] = ":".join([os.path.join(mbu.__file__, "conf"),
+                                        f"/usr/local/components/MBU-{VERSION}/share/eccodes/definitions"])
+        #                               f"/usr/local/components/MBU-{VERSION}/share/eccodes_MBU1.2/definitions"])
 
     file_input['inputFilenameJO'] = sys.argv[1]
     tree_job_order = xml.etree.ElementTree.parse(file_input['inputFilenameJO'])

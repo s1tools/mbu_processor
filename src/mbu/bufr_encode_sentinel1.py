@@ -182,23 +182,23 @@ class NetcdfToBufr(object):
             ecc.codes_set(self.bufr, "#%d#partitionNumber" % (p + 1), int(p + 1))
 
             value = float(self.dic_var_value['oswDirmet'][0][0][p])
-            # if value == -999: value = 511
+            if value < 1: value = 511
             ecc.codes_set(self.bufr, '#%d#dominantSwellWaveDirectionOfSpectralPartition' % (p + 1),  value)
 
             value = float(self.dic_var_value['oswHs'][0][0][p])
-            # if value == -999: value = 51.1
+            if value == -999: value = 51.1
             ecc.codes_set(self.bufr, '#%d#significantSwellWaveHeightOfSpectralPartition' % (p + 1), value)
 
             value = float(self.dic_var_value['oswWl'][0][0][p])
-            # if value == -999: value = 1311.71
+            if value < 1: value = 1311.71
             ecc.codes_set(self.bufr, '#%d#dominantSwellWavelengthOfSpectralPartition' % (p + 1), value)
 
             value = float(self.dic_var_value['oswIconf'][0][0][p])
-            # if value == -999: value = 15
+            if value < 0: value = 15
             ecc.codes_set(self.bufr, '#%d#confidenceOfInversionForEachPartitionOfSwellWaveSpectra' % (p + 1), value)
 
             value = float(self.dic_var_value['oswAmbiFac'][0][0][p])
-            # if value == -999: value = 1.62143
+            if value < -1 or value > 1.62143: value = 1.62143
             ecc.codes_set(self.bufr, '#%d#ambiguityRemovalFactorForSwellWavePartition' % (p + 1), value)
 
         if np.ma.is_masked(self.dic_var_value['oswPartitions']):
