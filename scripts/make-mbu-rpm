@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+VER=2.0
+REL=0
+export MBUVER=$VER
+export MBUREL=$REL
+
+sudo groupadd -g 2000 pic_run
+sudo adduser piccontrol --uid 1046 --uid 2000 --shell /bin/tcsh --home /home/piccontrol
+
+echo "Creating MBU processor RPM version $VER-$REL"
+
+sudo $PIP install /src/
+PRJ=/home/user
+finalTGT=/usr/local/components/MBU-$VER
+TGT=$PRJ/rpmbuild/BUILD/$finalTGT
+
+cd $PRJ
+#./build-package
+
+sudo rm -Rf `dirname $TGT`
+mkdir -p $TGT
+
+sudo cp -Rfa /usr/local/components/MBU-$VER/* $TGT
+
+cd $TGT/..
+echo "ok"
+rpmbuild -ba $PRJ/mbuprocessor-rpm.spec
+

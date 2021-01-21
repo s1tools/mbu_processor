@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  MBU_c6:
+    image: registry.brest.cls.fr/esa/mbu:${USER}
+    command: LOP_ProcMain JobOrder.xml
+    volumes:
+      - /home/mgoacolou/pyve/docker_IPF_py3/src/IPF-S1-LOPpy:/src
+      - /home/mgoacolou/pyve/docker_IPF_py3:/home/user
+      - /net:/net:slave
+      - /nobackup:/nobackup:slave
+      - $VIRTUAL_ENV:/docker_IPF
+      # tobe changed - /home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0:/data/GIOVANNA/BUILD_RPM_1.2.0
+      - /net/sentinel1/IPF_MAINTENANCE/IPF_CFG:/usr/local/conf/IPF_CFG
+      - /net/sentinel1/IPF_MAINTENANCE/ipf_test/datasets/python3:/data/workspace/processing:slave
+
+    security_opt:
+      - seccomp:unconfined
+
+  MBU_c7:
+    image: registry.brest.cls.fr/esa/mbu_c7:${USER}
+    command: LOP_ProcMain JobOrder.xml
+    volumes:
+      - /home/mgoacolou/pyve/docker_IPF_py3/src/IPF-S1-LOPpy:/src
+      - /home/mgoacolou/pyve/docker_IPF_py3:/home/user
+      - /net:/net:slave
+      - /nobackup:/nobackup:slave
+      - $VIRTUAL_ENV:/docker_IPF
+      # tobe changed - /home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0:/data/GIOVANNA/BUILD_RPM_1.2.0
+      - /net/sentinel1/IPF_MAINTENANCE/IPF_CFG:/usr/local/conf/IPF_CFG
+      - /net/sentinel1/IPF_MAINTENANCE/ipf_test/datasets/python3:/data/workspace/processing:slave
+
+    security_opt:
+      - seccomp:unconfined

@@ -1,0 +1,24 @@
+# first create the origin image with
+# docker build -f Dockerfile_build_MBU_RPM_c7_py3 -t registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c7_py3 .
+FROM registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c7_py3
+LABEL maintainer Matthieu BOURBIGOT <mbourbigot@cls.fr>
+
+
+USER root
+
+ARG userid=1046
+ARG groupid=2000
+
+RUN export uid=${userid} gid=${groupid} && \
+    mkdir -p /home/user && \
+    echo "user:x:${userid}:${groupid}:Developer,,,:/home/user:/bin/bash" >> /etc/passwd && \
+    echo "user:x:${userid}:" >> /etc/group && \
+    passwd -d user && \
+    echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod 0440 /etc/sudoers  && \
+    chown ${userid}:${groupid} -R /home/user
+
+ENV PATH=$PATH:$DEST_DIR/bin
+
+USER user
+WORKDIR /home/user

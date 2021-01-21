@@ -1,0 +1,92 @@
+FROM centos:6
+MAINTAINER Manuel GOACOLOU <mgoacolou@cls.fr>
+
+USER root
+ARG VERSION=2.0
+
+COPY CentOS-6.10-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+RUN yum upgrade -y && \
+    yum install -y sudo && \
+    curl https://www.getpagespeed.com/files/centos6-epel-eol.repo --output /etc/yum.repos.d/epel.repo && \
+    rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+
+#RUN  sed -i "s/#baseurl/baseurl/g" /etc/yum.repos.d/CentOS-Base.repo && \
+#     sed -i "s/mirrorlist/#mirrorlist/g" /etc/yum.repos.d/CentOS-Base.repo && \
+#     #sed -i "s/mirror.centos.org/mirror.cisp.com/g" /etc/yum.repos.d/CentOS-Base.repo && \
+#     yum repolist
+#RUN  yum install -y wget sudo && \
+#     wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm &&\
+#     rpm -ivh epel-release-6-8.noarch.rpm
+
+RUN yum install -y wget proj proj-devel git rpm-build redhat-rpm-config make \
+                   gcc gcc-gfortran xz cmake openssh-clients \
+                   libtiff-devel gcc-c++ rpm-sign prelink blas-devel lapack-devel \
+                   freetype freetype-devel libjpeg-turbo-devel netcdf-devel hdf5-devel hdf-devel \
+                   fftw.x86_64 fftw-devel.x86_64 createrepo bzip2-devel libffi-devel atlas-devel
+
+ENV buildroot=/tmp/build
+
+ENV BASE_DIR="/usr/local/components"
+ENV DEST_DIR="${BASE_DIR}/MBU-${VERSION}"
+
+RUN rm -Rf $buildroot && rm -Rf $DEST_DIR && mkdir -p $buildroot$BASE_DIR && mkdir -p $DEST_DIR && mkdir -p $DEST_DIR/bin  && mkdir -p $DEST_DIR/lib
+
+ENV LD_LIBRARY_PATH=$DEST_DIR/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/opt/openssl/lib:$LD_LIBRARY_PATH
+
+ENV PIP=$DEST_DIR/bin/pip3.7
+ENV PYTHON=$DEST_DIR/bin/python3.7
+
+RUN wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && \
+    tar zxvf openssl-1.1.1g.tar.gz && \
+    cd openssl-1.1.1g && \
+    ./config --prefix=$DEST_DIR --openssldir=/opt/openssl no-ssl2 && \
+    make && \
+    make install
+
+RUN wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz --no-check-certificate && \
+    tar xzf Python-3.7.9.tgz && \
+    cd Python-3.7.9 && \
+    ./configure --prefix=$DEST_DIR --with-openssl=$DEST_DIR --enable-optimizations --with-ensurepip=install --enable-unicode=ucs4 LDFLAGS="-Wl,-rpath $DEST_DIR/lib" && \
+    make -j4 && \
+    make altinstall && \
+    cd .. && \
+    rm -Rf Python-3.7.9
+
+RUN $PIP install --no-binary :all: numpy==1.16.2 && \
+    $PIP install --no-deps --no-binary :all: cftime==1.0.0 && \
+    $PIP install --no-binary :all: netcdf4==1.4.0 && \
+    $PIP install --no-binary :all: dateutils==0.6.11 && \
+    $PIP install --no-binary :all: configobj==5.0.6
+
+ENV PYTHTHON_DEST_DIR=$DEST_DIR
+
+# RUN ln -s $DEST_DIR/lib/libssl.so.1.1 $DEST_DIR/lib/ && \
+#     ln -s $DEST_DIR/lib/libcrypto.so.1.1 $DEST_DIR/lib/
+
+RUN yum install -y cmake3 && mkdir -p eccodes/build && cd eccodes && \
+    wget https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.12.0-Source.tar.gz?api=v2 -O eccodes-2.12.0-Source.tar.gz && \
+    tar zxf  eccodes-2.12.0-Source.tar.gz && \
+    cd build && cmake3 -DCMAKE_INSTALL_PREFIX=$DEST_DIR ../eccodes-2.12.0-Source && \
+     make -j4 && \
+     make install && \
+     cd .. && \
+     git clone https://github.com/ecmwf/eccodes-python && cd eccodes-python && git checkout 0.8.0 && \
+     $DEST_DIR/bin/pip3.7 install  . && \
+     cd ../.. && \
+     rm -Rf eccodes
+
+# COPY share/eccodes_MBU1.2 $DEST_DIR/share/eccodes_MBU1.2
+
+# create user calcul(1046):boost
+RUN export uid=1046 gid=2000 && \
+    mkdir -p /home/calcul && \
+    echo "calcul:x:${uid}:${gid}:Developer,,,:/home/calcul:/bin/bash" >> /etc/passwd && \
+    echo "calcul:x:${uid}:" >> /etc/group && \
+    echo "calcul ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod 0440 /etc/sudoers  && \
+    chown ${uid}:${gid} -R /home/calcul
+
+USER calcul
+# installation of LOP dependencies
+CMD sudo $SOURCEDIR/make_LOP_RPM_from_docker.sh
