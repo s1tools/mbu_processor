@@ -5,7 +5,7 @@ export USER_NAME=$(id -un)
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
 export reg=esa/mbu_c7
-export name="docker_mbu_dev"
+export name="docker_mbu_dev_c7"
 
 src_dir=$(dirname $(readlink -f $0))
 echo $(dirname $src_dir)

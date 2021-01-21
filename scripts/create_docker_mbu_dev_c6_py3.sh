@@ -1,9 +1,11 @@
 #!/bin/bash
+set -e
+
 export USER_NAME=$(id -un)
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
-export reg=esa/mbu
-export name="docker_mbu_dev"
+export reg=esa/mbu_c6
+export name="docker_mbu_dev_c6"
 
 src_dir=$(dirname $(readlink -f $0))
 
