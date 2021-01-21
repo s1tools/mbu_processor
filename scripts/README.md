@@ -1,9 +1,8 @@
-===========================
 MBU Processor build process
 ===========================
 
 build main
-==========
+----------
 
 these commands build the mais docker image with all needed except MBUProcess python package
 
@@ -19,7 +18,7 @@ docker build -f Dockerfile_build_MBU_RPM_c7_py3 -t registry.brest.cls.fr/esa/doc
 
 
 build developper image
-======================
+----------------------
 
 this add the user with same ids as the linux user who start the script
 it also install MBUProcess package in developer mode
@@ -35,10 +34,10 @@ cd /path/to/MBUProcess/scripts
 ```
 
 run in developper mode
-======================
+----------------------
 
-only docker
------------
+###only docker
+
 
 ```
 # CentOS 6
@@ -54,8 +53,8 @@ docker run -v /path/to/MBUProcess:/src \
 	   bash
 ```
 
-docker-compose
---------------
+###docker-compose
+
 
 initialise the docker-compose file
 
@@ -74,12 +73,12 @@ docker-compose run MBU_c7 bash
 
 
 build rpm
-=========
+---------
 
 
 
-only docker
------------
+###only docker
+
 
 ```
 # CentOS 6
@@ -96,8 +95,8 @@ docker run -v /path/to/MBUProcess:/src \
 ```
 RPMS must copyied some else at each steps because these process overwrite the results
 
-docker-compose
---------------
+###docker-compose
+
 
 initialise the docker-compose file first if not done
 
