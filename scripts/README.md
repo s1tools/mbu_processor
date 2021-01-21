@@ -10,10 +10,10 @@ these commands build the mais docker image with all needed except MBUProcess pyt
 cd /path/to/MBUProcess/scripts
 
 # CentOS 6
-docker build -f Dockerfile_build_MBU_RPM_c6_py3 -t registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c6_py3
+docker build -f Dockerfile_build_MBU_RPM_c6_py3 -t registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c6_py3 .
 
 # CentOS 7
-docker build -f Dockerfile_build_MBU_RPM_c7_py3 -t registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c7_py3 
+docker build -f Dockerfile_build_MBU_RPM_c7_py3 -t registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c7_py3 .
 ```
 
 
