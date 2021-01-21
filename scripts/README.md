@@ -108,3 +108,32 @@ docker-compose run MBU_c7 /src/scripts/make-mbu-rpm
 
 RPMS must copyied some else at each steps because these process overwrite the results
 
+
+install RPM
+-----------
+
+
+### centOS 6
+
+```
+docker run -v /home/mgoacolou/pyve/docker_IPF_py3:/venv \
+           -v /home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0:/data/GIOVANNA/BUILD_RPM_1.2.0 \
+	   -ti centos:6 bash
+
+cp /venv/CentOS-6.10-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+yum upgrade -y &&     yum install -y sudo &&     curl https://www.getpagespeed.com/files/centos6-epel-eol.repo --output /etc/yum.repos.d/epel.repo &&     rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+yum install /venv/rpmbuild/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm 
+```
+
+### centOS 7
+
+```
+docker run -v /home/mgoacolou/pyve/docker_IPF_py3:/venv \
+           -v /home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0:/data/GIOVANNA/BUILD_RPM_1.2.0 \
+	   -ti centos:7 bash
+
+yum upgrade -y
+curl https://www.getpagespeed.com/files/centos7-epel-eol.repo --output /etc/yum.repos.d/epel.repo
+rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+yum install /venv/rpmbuild/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm 
+```
