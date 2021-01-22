@@ -161,3 +161,25 @@ yum install -y /venv/rpmbuild_c7/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
 export PATH=$PATH:/usr/local/components/MBU/bin/
 
 ```
+
+
+compare previous version
+------------------------
+
+```bash
+orig_result_dir=/home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0/TEST_DATA_orig
+test_result_dir=/home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0/TEST_DATA_test
+
+for workdir in $(ls $orig_result_dir)
+do echo $workdir
+   for bufr in $(find $orig_result_dir/$workdir/ -name "*bufr")
+   do
+       echo $bufr
+       bufr_dump -p $bufr > /tmp/mbu_1.2
+       echo $test_result_dir/$workdir/$(basename $bufr)
+       bufr_dump -p $test_result_dir/$workdir/$(basename $bufr) > /tmp/mbu_2.0
+       diff -U 3 /tmp/mbu_1.2 /tmp/mbu_2.0
+       echo ""
+   done
+done
+```
