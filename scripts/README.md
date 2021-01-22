@@ -112,6 +112,26 @@ RPMS must copyied some else at each steps because these process overwrite the re
 install RPM
 -----------
 
+### previous version (1.2)
+
+```
+docker run -v /home/mgoacolou/pyve/docker_IPF_py3:/venv \
+           -v /home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0:/data/GIOVANNA/BUILD_RPM_1.2.0 \
+	   -ti centos:6 bash
+
+cp /venv/CentOS-6.10-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+yum upgrade -y
+curl https://www.getpagespeed.com/files/centos6-epel-eol.repo --output /etc/yum.repos.d/epel.repo
+rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+yum install netcdf-devel
+easy_install --no-deps netCDF4==1.2.4
+easy_install --no-deps argparse
+
+yum install S1PD-MBU-1.2-0.x86_64.rpm
+export PATH=$PATH:/usr/local/components/MBU/bin/
+
+```
+
 
 ### centOS 6
 
@@ -124,7 +144,8 @@ cp /venv/CentOS-6.10-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 yum upgrade -y
 curl https://www.getpagespeed.com/files/centos6-epel-eol.repo --output /etc/yum.repos.d/epel.repo
 rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
-yum install /venv/rpmbuild/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm 
+
+yum install -y /venv/rpmbuild_c6/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
 ```
 
 ### centOS 7
@@ -134,8 +155,9 @@ docker run -v /home/mgoacolou/pyve/docker_IPF_py3:/venv \
            -v /home/mgoacolou/pyve/docker_IPF_py3/src/bufr/02-MBU_RPM/software/MBU_1.2.0:/data/GIOVANNA/BUILD_RPM_1.2.0 \
 	   -ti centos:7 bash
 
-yum upgrade -y
-curl https://www.getpagespeed.com/files/centos7-epel-eol.repo --output /etc/yum.repos.d/epel.repo
-rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
-yum install /venv/rpmbuild/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm 
+yum install epel-release
+
+yum install -y /venv/rpmbuild_c7/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
+export PATH=$PATH:/usr/local/components/MBU/bin/
+
 ```

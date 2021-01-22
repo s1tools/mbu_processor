@@ -26,7 +26,7 @@ setup(name='Sentinel1_MBU_Processor',
                         ],
       entry_points={
           'console_scripts': [
-              'MBUProcessor = mbu.converter_ocn_to_bufr:cmdline',
+              'MBUprocessor = mbu.converter_ocn_to_bufr:cmdline',
               'bufr_encode_sentinel1 = mbu.bufr_encode_sentinel1:cmdline',
           ]
       },

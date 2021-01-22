@@ -43,8 +43,8 @@ class JobOrder(object):
 
 class OCNProduct(object):
     def __init__(self, filename='#'):
-        self.ocnProduct = filename
-        self.treeManifestOcnProduct = xml.etree.ElementTree.parse(self.ocnProduct + '/manifest.safe')
+        self.ocn_product = filename
+        self.manifest_tree = xml.etree.ElementTree.parse(self.ocn_product + '/manifest.safe')
 
         self.list_manifest = dict()
         self.namespace = {'s1sarl2': "http://www.esa.int/safe/sentinel-1.0/sentinel-1/sar/level-2",
@@ -58,11 +58,10 @@ class OCNProduct(object):
         # filename netcdf
         self.list_manifest['ntcdfFilename'] = list()
 
-        file_location = self.treeManifestOcnProduct.findall('.//dataObjectSection/dataObject/byteStream/fileLocation')
-        root = self.treeManifestOcnProduct.getroot()
-        for iNC in file_location:
-            if os.path.splitext(iNC.get('href'))[1] == '.nc':
-                self.list_manifest['ntcdfFilename'].append(self.ocnProduct + iNC.get('href')[1:])
+        file_location = self.manifest_tree.findall('.//dataObjectSection/dataObject/byteStream/fileLocation')
+        for i_nc in file_location:
+            if os.path.splitext(i_nc.get('href'))[1] == '.nc':
+                self.list_manifest['ntcdfFilename'].append(self.ocn_product + i_nc.get('href')[1:])
 
         logging.info('listManifest: ')
         logging.info(pprint.pformat(self.list_manifest))

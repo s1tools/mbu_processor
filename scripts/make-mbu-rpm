@@ -25,5 +25,5 @@ sudo cp -Rfa /usr/local/components/MBU-$VER/* $TGT
 
 cd $TGT/..
 echo "ok"
-rpmbuild -ba $PRJ/mbuprocessor-rpm.spec
+rpmbuild -ba /src/scripts/mbuprocessor-rpm.spec
 
