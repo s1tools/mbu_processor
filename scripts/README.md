@@ -145,6 +145,9 @@ yum upgrade -y
 curl https://www.getpagespeed.com/files/centos6-epel-eol.repo --output /etc/yum.repos.d/epel.repo
 rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 
+# dowload dependencies
+yum install --downloadonly --downloaddir=/venv/rpmbuild_c6/RPMS/x86_64/ /venv/rpmbuild_c6/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
+
 yum install -y /venv/rpmbuild_c6/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
 ```
 
@@ -156,6 +159,9 @@ docker run -v /home/mgoacolou/pyve/docker_IPF_py3:/venv \
 	   -ti centos:7 bash
 
 yum install epel-release
+
+# dowload dependencies
+yum install --downloadonly --downloaddir=/venv/rpmbuild_c7/RPMS/x86_64/ /venv/rpmbuild_c7/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
 
 yum install -y /venv/rpmbuild_c7/RPMS/x86_64/S1PD-MBU-2.0-0.x86_64.rpm
 export PATH=$PATH:/usr/local/components/MBU/bin/
