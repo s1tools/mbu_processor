@@ -13,12 +13,106 @@ import eccodes as ecc
 
 along_track_resolution = mbu.config.ini.get('ocnVariable', 'alongTrackResolution')
 
-unexpanded_descriptors = [1007, 2019, 1096, 25061, 5071, 5072, 5073, 5074, 5075, 5040, 8075, 301011, 301013, 301021,
-                          1012, 7002, 22063, 8012, 2104, 21105, 42008, 25103, 25104, 25105, 25106, 25107, 25108, 11001,
-                          11002, 42006, 21030, 201130, 202129, 22022, 202000, 201000, 2026, 2027, 3025, 3026, 40039,
-                          40040, 40041, 40042, 2111, 25014, 25189, 106000, 31001, 42010, 42001, 42002, 42003, 42004,
-                          42005, 113000, 31001, 5030, 201130, 6030, 201000, 201131, 21135, 201000, 21136, 201130, 22161,
-                          201000, 42009, 42007]
+# extract:
+#
+# |  F  |  X  |  Y  |
+# |2bits|6bits|8bits|
+#
+# noted as number in form FXXYYY in next list: starting 0 are not present du to python syntax
+# for instance 1007 -> 001007 -> F=0 X=01 Y=007
+
+# If F = 0, the descriptor is an element descriptor.
+# The values of X and Y refer directly to a single entry in Table B, X indicating
+# the class and Y the entry within that class.
+#
+# If F = 1, the descriptor is a replication descriptor defining the replication data description operator according to
+# Regulations 94.5.4.1 and 94.5.4.2. The values of X and Y define the scope of the operator and the number of
+# replications, respectively. If Y = 0, delayed replication is defined; the next element descriptor will define a
+# data item giving the number of replications; this descriptor may also indicate (by its value of Y) that the following
+# datum is to be replicated together with the following descriptor.
+#
+# If F = 2, the descriptor is an operator descriptor. The value of X indicates an operation in Table C. The meaning
+# of Y depends on the operation.
+#
+# If F = 3, the descriptor is a sequence descriptor. The values of X and Y refer directly to a single entry in
+# Table D. Each entry in Table D contains a list of element descriptors, data description operators, and/or sequence
+# descriptors. A sequence descriptor is defined to be equivalent to the corresponding list of descriptors at the
+# Table D entry.
+# numerical model.
+unexpanded_descriptors = [
+    (1007, 'satelliteIdentifier'),
+    (2019, 'satelliteInstruments'),
+    (1096, 'stationAcquisition'),
+    (25061, 'softwareVersionNumber'),
+    (5071, 'stripmapIdentifier'),
+    (5072, 'numberOfSpectraInRangeDirection'),
+    (5073, 'numberOfSpectraInAzimuthalDirection'),
+    (5074, 'indexInRangeDirection'),
+    (5075, 'indexInAzimuthalDirection'),
+    (5040, 'orbitNumber'),
+    (8075, 'orbitQualifier'),
+    (301011, 'seq: year month day'),
+    (301013, 'seq: hour minute second'),
+    (301021, 'seq: latitude longitude'),
+    (1012, 'directionOfMotionOfMovingObservingPlatform'),
+    (7002, 'height'),
+    (22063, 'totalWaterDepth'),
+    (8012, 'landOrSeaQualifier'),
+    (2104, 'antennaPolarization'),
+    (21105, 'normalizedRadarCrossSection'),
+    (42008, 'nonlinearInverseSpectralWidth'),
+    (25103, 'numberOfDirectionalBins'),
+    (25104, 'numberOfWavelengthBins'),
+    (25105, 'firstDirectionalBin'),
+    (25106, 'directionalBinStep'),
+    (25107, 'firstWavelengthBin'),
+    (25108, 'lastWavelengthBin'),
+    (11001, 'windDirection'),
+    (11002, 'windSpeed'),
+    (42006, 'waveAge'),
+    (21030, 'signalToNoiseRatio'),
+    (201130, 'add 2 bits'),
+    (202129, 'add 1 to the scale'),
+    (22022, 'heightOfWindWaves'),
+    (202000, 'end of change the scale'),
+    (201000, 'end of bit add'),
+    (2026, 'crossTrackResolution'),
+    (2027, 'alongTrackResolution'),
+    (3025, 'crossTrackEstimationAreaSize'),
+    (3026, 'alongTrackEstimationAreaSize'),
+    (40039, 'singleLookComplexImageIntensity'),
+    (40040, 'singleLookComplexImageSkewness'),
+    (40041, 'singleLookComplexImageKurtosis'),
+    (40042, 'singleLookComplexImageVariance'),
+    (2111, 'radarIncidenceAngle'),
+    (25014, 'azimuthClutterCutOff'),
+    (25189, 'rangeCutOffWavelength'),
+    (42017, 'qualityFlagOfSwellWaveSpectra'),
+    (107000, 'Delayed replication of 7 descriptors'),
+    (31001, 'delayedDescriptorReplicationFactor'),
+    (42010, 'partitionNumber'),
+    (42001, 'dominantSwellWaveDirectionOfSpectralPartition'),
+    (42002, 'significantSwellWaveHeightOfSpectralPartition'),
+    (42003, 'dominantSwellWavelengthOfSpectralPartition'),
+    (42004, 'confidenceOfInversionForEachPartitionOfSwellWaveSpectra'),
+    (42005, 'ambiguityRemovalFactorForSwellWavePartition'),
+    (42018, 'qualityFlagForEachPartitionOfSwellWaveSpectra'),
+    (113000, 'Delayed replication of 13 descriptors'),
+    (31001, 'delayedDescriptorReplicationFactor'),
+    (5030, 'directionSpectral'),
+    (201130, 'add 2 bits'),
+    (6030, 'waveNumberSpectral'),
+    (201000, 'end of change'),
+    (201131, 'add 3 bits'),
+    (21135, 'realPartOfCrossSpectraPolarGridNumberOfBins'),
+    (201000, 'end of change'),
+    (21136, 'imaginaryPartOfCrossSpectraPolarGridNumberOfBins'),
+    (201130, 'add 2 bits'),
+    (22161, 'waveSpectra'),
+    (201000, 'end of change'),
+    (42009, 'binPartitionReference'),
+    (42007, 'shortestOceanWavelengthOnSpectralResolution'),
+]
 
 
 class NetcdfToBufr(object):
@@ -63,6 +157,11 @@ class NetcdfToBufr(object):
             self.missionCode = 62
         elif 'S1B' in self.dic_attr_value['missionName']:
             self.missionCode = 63
+        # under progress see https://github.com/wmo-im/CCT/pull/148
+        elif 'S1C' in self.dic_attr_value['missionName']:
+            self.missionCode = 68
+        elif 'S1D' in self.dic_attr_value['missionName']:
+            self.missionCode = 69
 
         logging.info('set up polarization')
         if self.dic_attr_value['polarisation'] == 'HH':
@@ -124,7 +223,8 @@ class NetcdfToBufr(object):
 
         ecc.codes_set(self.bufr, 'masterTablesVersionNumber', 27)
         ecc.codes_set(self.bufr, 'localTablesVersionNumber', 4)
-        ecc.codes_set_array(self.bufr, 'unexpandedDescriptors', unexpanded_descriptors)
+        ecc.codes_set_array(self.bufr, 'unexpandedDescriptors', [e[0] for e in unexpanded_descriptors])
+
         ecc.codes_set(self.bufr, 'satelliteIdentifier', self.missionCode)
         ecc.codes_set(self.bufr, 'satelliteInstruments', 151)
         ecc.codes_set(self.bufr, 'stationAcquisition', self.dic_attr_value['processingCenter'][:3])
@@ -178,12 +278,16 @@ class NetcdfToBufr(object):
         ecc.codes_set_double_array(self.bufr, 'azimuthClutterCutOff', self.dic_var_value['oswAzCutoff'][0])
         ecc.codes_set_double_array(self.bufr, 'rangeCutOffWavelength', self.dic_var_value['oswRaCutoff'][0])
 
+        value = float(self.dic_var_value['oswQualityFlag'][0])
+        if value < 0: value = 15
+        ecc.codes_set_long(self.bufr, 'qualityFlagOfSwellWaveSpectra', value)
+
         for p in range(len(self.dic_dim_value['oswPartitions'])):
             ecc.codes_set(self.bufr, "#%d#partitionNumber" % (p + 1), int(p + 1))
 
             value = float(self.dic_var_value['oswDirmet'][0][0][p])
             if value < 1: value = 511
-            ecc.codes_set(self.bufr, '#%d#dominantSwellWaveDirectionOfSpectralPartition' % (p + 1),  value)
+            ecc.codes_set(self.bufr, '#%d#dominantSwellWaveDirectionOfSpectralPartition' % (p + 1), value)
 
             value = float(self.dic_var_value['oswHs'][0][0][p])
             if value == -999: value = 51.1
@@ -193,13 +297,17 @@ class NetcdfToBufr(object):
             if value < 1: value = 1311.71
             ecc.codes_set(self.bufr, '#%d#dominantSwellWavelengthOfSpectralPartition' % (p + 1), value)
 
-            value = float(self.dic_var_value['oswIconf'][0][0][p])
+            value = int(self.dic_var_value['oswIconf'][0][0][p])
             if value < 0: value = 15
             ecc.codes_set(self.bufr, '#%d#confidenceOfInversionForEachPartitionOfSwellWaveSpectra' % (p + 1), value)
 
             value = float(self.dic_var_value['oswAmbiFac'][0][0][p])
             if value < -1 or value > 1.62143: value = 1.62143
             ecc.codes_set(self.bufr, '#%d#ambiguityRemovalFactorForSwellWavePartition' % (p + 1), value)
+
+            value = int(self.dic_var_value['oswQualityFlagPartition'][0][0][p])
+            if value < 0: value = 15
+            ecc.codes_set_long(self.bufr, '#%d#qualityFlagForEachPartitionOfSwellWaveSpectra' % (p + 1), value)
 
         if np.ma.is_masked(self.dic_var_value['oswPartitions']):
             dum = self.dic_var_value['oswPartitions'].astype(np.float32)
@@ -210,7 +318,7 @@ class NetcdfToBufr(object):
 
         for a in range(len(self.dic_dim_value['oswAngularBinSize'])):
             ecc.codes_set(self.bufr, "#%d#directionSpectral" % (a + 1), int(self.dic_var_value['oswPhi'][a]))
-            ecc.codes_set_double_array(self.bufr, "#%d#waveNumberSpectral" % (a + 1), self.dic_var_value['oswK'])
+            ecc.codes_set_double_array(self.bufr, "#%d#waveNumberSpectral" % (a + 1), self.dic_var_value['oswK'][:60])
             ecc.codes_set_double_array(self.bufr, "#%d#realPartOfCrossSpectraPolarGridNumberOfBins" % (a + 1),
                                        self.dic_var_value['oswQualityCrossSpectraRe'][0][0][a][:60])
             ecc.codes_set_double_array(self.bufr, "#%d#imaginaryPartOfCrossSpectraPolarGridNumberOfBins" % (a + 1),

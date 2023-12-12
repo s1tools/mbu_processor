@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-VER=2.0
+VER=3.0
 REL=0
 export MBUVER=$VER
 export MBUREL=$REL
@@ -14,6 +14,10 @@ sudo $PIP install /src/
 PRJ=/home/user
 finalTGT=/usr/local/components/MBU-$VER
 TGT=$PRJ/rpmbuild/BUILD/$finalTGT
+
+sudo mkdir -p $finalTGT/share/local_eccodes_definitions
+echo copy local eccodes definitions
+sudo cp -Rf /src/src/mbu/conf/* $finalTGT/share/local_eccodes_definitions
 
 cd $PRJ
 #./build-package

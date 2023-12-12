@@ -1,7 +1,7 @@
 # first create the origin image with
 # docker build -f Dockerfile_build_MBU_RPM_c7_py3 -t registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c7_py3 .
 FROM registry.brest.cls.fr/esa/docker_ipf:build_MBU_RPM_c7_py3
-LABEL maintainer Matthieu BOURBIGOT <mbourbigot@cls.fr>
+MAINTAINER Manuel GOACOLOU <mgoacolou@cls.fr>
 
 
 USER root
