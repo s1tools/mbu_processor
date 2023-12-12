@@ -9,12 +9,16 @@ setup(name='Sentinel1_MBU_Processor',
       description="",
       long_description="""\
 """,
-      classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+          "License :: OSI Approved :: MIT License",
+          "Operating System :: POSIX :: Linux",
+          "Programming Language :: Python :: 3.9",
+      ],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='',
-      author='Manuel GOACOLOU',
+      author='Nuno Miranda (ESA), Manuel Goacolou (MPC-Team/CLS)',
       author_email='mgoacolou@groupcls.fr',
       url='http://www.cls.fr',
-      license='Closed',
+      license='MIT',
       packages=find_packages('src'),
       package_dir={'': 'src'},
       package_data={'cls': ['maps'+'/*'*20, ]},

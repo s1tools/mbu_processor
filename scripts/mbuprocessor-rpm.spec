@@ -13,8 +13,8 @@ Release:        0
 Summary:        MBU Processor
 
 Group:          Applications/Archiving
-License:        (C) CLS
-URL:            https://cls.fr/
+License:        Copyright (c) 2021 ESA
+URL:            https://esa.int/
 BuildArch:      x86_64
 Requires: libcurl,hdf5,netcdf,lapack,blas,atlas
 %description
