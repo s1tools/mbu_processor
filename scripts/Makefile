@@ -27,6 +27,20 @@ dev_run:
 	   -ti $(REGISTER) \
 	   bash
 
+build_test_image:
+	docker build --no-cache -f Dockerfile_test_c7_py3 \
+           --build-arg userid=$(USER_ID) \
+           --build-arg groupid=$(GROUP_ID) \
+           -t registry.brest.cls.fr/esa/docker_ipf:test_mbu . 
+
+run_test:
+	docker run --rm \
+          -v $(MBU_SRC_DIR):/home/user \
+	  -v $(HOME):$(HOME) \
+	  -v $(HOME)/data/TEST_DATA_1.2:/data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA \
+	  -v /net:/net:slave \
+	  -ti registry.brest.cls.fr/esa/docker_ipf:test_mbu bash
+
 build_rpm:
 	docker run -v $(MBU_SRC_DIR):/src \
            -v $(MBU_SRC_DIR):/home/user \

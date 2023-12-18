@@ -10,7 +10,7 @@ import xml.etree.ElementTree
 import mbu.processor
 import mbu
 
-VERSION = "2.0"
+VERSION = "3.0"
 
 
 def cmdline():
@@ -20,7 +20,7 @@ def cmdline():
     file_input = dict()
     env_var = "ECCODES_DEFINITION_PATH"
     if env_var not in os.environ:
-        os.environ[env_var] = ":".join([os.path.join(mbu.__file__, "conf"),
+        os.environ[env_var] = ":".join([os.path.join(os.path.dirname(mbu.__file__), "conf"),
                                         f"/usr/local/components/MBU-{VERSION}/share/eccodes/definitions"])
         #                               f"/usr/local/components/MBU-{VERSION}/share/eccodes_MBU1.2/definitions"])
 

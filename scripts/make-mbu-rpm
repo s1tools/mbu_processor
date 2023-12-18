@@ -7,6 +7,7 @@ export MBUREL=$REL
 
 sudo groupadd -g 2000 pic_run
 sudo adduser piccontrol --uid 1046 --uid 2000 --shell /bin/tcsh --home /home/piccontrol
+sudo sed -i "s;#! /usr/local/bin/python;#! /usr/bin/env python;g" /usr/local/components/MBU-3.0/lib/python3.9/cgi.py
 
 echo "Creating MBU processor RPM version $VER-$REL"
 
