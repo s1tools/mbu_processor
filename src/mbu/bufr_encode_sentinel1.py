@@ -278,8 +278,11 @@ class NetcdfToBufr(object):
         ecc.codes_set_double_array(self.bufr, 'azimuthClutterCutOff', self.dic_var_value['oswAzCutoff'][0])
         ecc.codes_set_double_array(self.bufr, 'rangeCutOffWavelength', self.dic_var_value['oswRaCutoff'][0])
 
-        value = float(self.dic_var_value['oswQualityFlag'][0])
-        if value < 0: value = 15
+        try:
+            value = float(self.dic_var_value['oswQualityFlag'][0])
+            if value < 0: value = 15
+        except KeyError:
+            value = 15
         ecc.codes_set_long(self.bufr, 'qualityFlagOfSwellWaveSpectra', value)
 
         for p in range(len(self.dic_dim_value['oswPartitions'])):
@@ -305,8 +308,11 @@ class NetcdfToBufr(object):
             if value < -1 or value > 1.62143: value = 1.62143
             ecc.codes_set(self.bufr, '#%d#ambiguityRemovalFactorForSwellWavePartition' % (p + 1), value)
 
-            value = int(self.dic_var_value['oswQualityFlagPartition'][0][0][p])
-            if value < 0: value = 15
+            try:
+                value = int(self.dic_var_value['oswQualityFlagPartition'][0][0][p])
+                if value < 0: value = 15
+            except KeyError:
+                value = 15
             ecc.codes_set_long(self.bufr, '#%d#qualityFlagForEachPartitionOfSwellWaveSpectra' % (p + 1), value)
 
         if np.ma.is_masked(self.dic_var_value['oswPartitions']):

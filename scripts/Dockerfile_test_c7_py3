@@ -1,0 +1,24 @@
+FROM centos:7
+MAINTAINER Manuel GOACOLOU <mgoacolou@cls.fr>
+
+USER root
+
+RUN yum -y install epel-release && yum upgrade -y
+RUN yum install -y sudo wget python
+
+ARG userid=1046
+ARG groupid=2000
+
+RUN export uid=${userid} gid=${groupid} && \
+    mkdir -p /home/user && \
+    echo "user:x:${userid}:${groupid}:Developer,,,:/home/user:/bin/bash" >> /etc/passwd && \
+    echo "user:x:${userid}:" >> /etc/group && \
+    passwd -d user && \
+    echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod 0440 /etc/sudoers  && \
+    chown ${userid}:${groupid} -R /home/user
+
+ENV PATH=$PATH:$DEST_DIR/bin
+
+USER user
+WORKDIR /home/user
