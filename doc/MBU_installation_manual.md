@@ -107,7 +107,7 @@ INPUT: NETCDF => | bufr_encode_sentinel1               |=> OUTPUT: BUFR
 *Figure 1 - Sample code provided by ECMWF*
 
 ESA has implemented the wrapper interface for the PDGS (Figure 2). It takes as input  a working directory including SAFE product and a Joborder file to perform the conversion.
-
+![Figure 2](https://github.com/s1tools/mbu_processor/blob/upload_documentation/doc/MBU_installation_manual_fig-2.png)  
 *Figure 2 - Wrapping of WV OCN to BUFR*
 
 ### Configuration
