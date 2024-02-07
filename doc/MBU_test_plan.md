@@ -1,14 +1,14 @@
 # MBU Test Plan
 
-## Introduction
+## 1 Introduction
 
-### Background/Context
+### 1.1 Background/Context
 
 The NetCDF to BUFR conversion tool MBU processor as initially developed by SERCO for ESA.  
 CLS took over the responsibility to maintain this software.  
 Starting from MBU 2.0 this software is maintained by CLS.  
 
-### Purpose of this document
+### 1.2 Purpose of this document
 
 This document describes the validation plan of the NetCDF to Bufr software:
 - Test requirements
@@ -16,14 +16,14 @@ This document describes the validation plan of the NetCDF to Bufr software:
 - Test cases
 - Test steps
 
-### Document organisation
+### 1.3 Document organisation
 
 Section 1: this introduction  
 Section 2: Test of the installation procedure  
 Section 3: Test of the MBU processor software  
 Section 4: Test of Non regression
 
-### Applicable and Reference Documents
+### 1.4 Applicable and Reference Documents
 
 #### Applicable Documents
 
@@ -37,12 +37,12 @@ The following documents provide useful reference information associated with thi
 R-1	&nbsp;&nbsp;&nbsp; ES-RS-ESA-SY-0007	Mission Requirements Document for the European Radar Observatory Sentinel-1, Issue 1/4, ESA, July 11, 2005  
 R-2	&nbsp;&nbsp;&nbsp; Lotfi A., Lefevre M., Hauser D., Chapron B., Collard F., “The impact of using the upgraded processing of ASAR Level 2 wave products in the assimilation system”, Proc. Envisat Symposium, 22-26 April 2007, Montreux
 
-### Acronyms and Definition
+### 1.5 Acronyms and Definition
 
 CO: CentOS  
 RH: Red Hat
 
-## Test of the installation procedure
+## 2 Test of the installation procedure
 
 This test consists of the installation of MBU and verify that it works properly.  
 **Test Type**: Nominal  
@@ -51,10 +51,10 @@ This test consists of the installation of MBU and verify that it works properly.
 Cent OS 7 environment
 docker run -v /path/to/rpm:/venv -v /path/to/bufr/TEST_DATA:/data/GIOVANNA/BUILD_RPM_1.2.0 -ti centos:7 bash
 ```
-### Input Data
+### 2.1 Input Data
 - MBU RPM for RH/CO 7
 
-### Output
+### 2.2 Output
 
 #### Output Data
 N/A
@@ -62,15 +62,15 @@ N/A
 #### Expected results, specific points to check
 The installation finish without any error.
 
-### Starting conditions
+### 2.3 Starting conditions
 
 None
 
-### Actions after test execution
+### 2.4 Actions after test execution
 
 None
 
-### Test cases
+### 2.5 Test cases
 
 |Test|Description|
 |---|---|
@@ -91,7 +91,7 @@ MBU MBU-3.0
 ls /usr/local/components/MBU-3.0/bin/MBUprocessor
 /usr/local/components/MBU-3.0/bin/MBUprocessor
 ```
-## Test of MBUprocessor software
+## 3 Test of MBUprocessor software
 
 The test consists of launching the MBUProcessor and verify that it works properly.  
 **Test Type**: Nominal  
@@ -101,7 +101,7 @@ Cent OS 7 environment:
 docker run -v /path/to/rpm:/venv -v /path/to/bufr/TEST_DATA:/data/GIOVANNA/BUILD_RPM_1.2.0 -ti centos:7 bash
 ```
 
-### Input Data
+### 3.1 Input Data
 
 -	MBU RPM for RH/CO 7
 -	TEST DATA provided with MBU 1.2.0:
@@ -119,7 +119,7 @@ docker run -v /path/to/rpm:/venv -v /path/to/bufr/TEST_DATA:/data/GIOVANNA/BUILD
 
 *Table 2: Test data*
 
-### Output
+### 3.2 Output
 #### Output Data
 N/A
 
@@ -128,17 +128,17 @@ N/A
 The execution finish without any error.  
 The new quality flags are present.
 
-### Starting Conditions
+### 3.3 Starting Conditions
 Installation test must be done without error.  
 Add of MBU Processor in the path:
 ```
 export PATH=$PATH:/usr/local/components/MBU-3.0/bin
 ```
-### Actions after test execution
+### 3.4 Actions after test execution
 
 None
 
-### Test cases
+### 3.5 Test cases
 
 The test cases are the following: 
 |Test|Description|
@@ -147,7 +147,7 @@ The test cases are the following:
 
 *Table 3: Run MBU Processor test cases*
 
-### Detailed test steps
+### 3.6 Detailed test steps
 
 The following steps allows to perform the MBU launching tests.
 - Run execution for one JobOrder
@@ -224,7 +224,7 @@ listOutputBUFR:
 Run completed in 2.030670642852783 seconds:
 ```
 
-## Test Non regression
+## 4 Non regression Test
 
 This test checks the bufr format produced by MBU  
 **Test Type**: Nominal  
@@ -234,7 +234,7 @@ Cent OS 7 environment
 docker run -v /path/to/rpm:/venv -v /path/to/bufr/TEST_DATA:/data/GIOVANNA/BUILD_RPM_1.2.0 -ti centos:7 bash
 ```
 
-### Input Data
+### 4.1 Input Data
 -	MBU RPM for RH/CO 7
 -	Reference TEST DATA: .bufr files test data provided with MBU 1.2:
 
@@ -251,7 +251,7 @@ docker run -v /path/to/rpm:/venv -v /path/to/bufr/TEST_DATA:/data/GIOVANNA/BUILD
 
 *Table 4 : Test data*
 
-### Output
+### 4.2 Output
 
 #### Output Data
 All reference bufr files  
@@ -263,7 +263,7 @@ All job orders work without any error on terminal.
 There are the same number of bufr files as in previous test data.  
 3.0 files contain new quality flags.  
 
-### Starting Conditions
+### 4.3 Starting Conditions
 
 Installation of RPM must be done as describe in “installation test”.  
 Add of MBU Processor in the path:
@@ -271,11 +271,11 @@ Add of MBU Processor in the path:
 export PATH=$PATH:/usr/local/components/MBU-3.0/bin
 ```
 
-### Actions after test execution
+### 4.4 Actions after test execution
 
 None
 
-### Test cases
+### 4.5 Test cases
 
 The test case consists of run the MBU processor over all JobOrder. Then, a script will compare all the .bufr files produced with the reference .bufr files.  
 The test cases are the following:
@@ -293,7 +293,7 @@ The test cases are the following:
 
 *Table 5: Non-regression test cases*
 
-### Detailed test steps
+### 4.6 Detailed test steps
 
 The following steps allows to perform the non-regression tests.
 -	Run MBUprocessor on all JobOrder with 2.0
