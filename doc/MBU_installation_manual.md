@@ -173,8 +173,8 @@ $ make build_rpm
 ```
 ### Validation Plan
 
-Refer to document [BUFR-VP]
+Refer to document [Validation Plan](./MBU_test_plan.md)
 
 ### Test Report
 
-Refer to document [BUFR-TR]
+Refer to document [Test Report](./MBU_test_report.md)
