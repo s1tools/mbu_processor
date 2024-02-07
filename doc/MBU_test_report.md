@@ -1,23 +1,23 @@
 # MBU Test Report
 
-## Introduction
+## 1 Introduction
 
-### Background/Context
+### 1.1 Background/Context
 
 The NetCDF to BUFR conversion tool MBU processor as initially developed by SERCO for ESA.  
 CLS took over the responsibility to maintain this software.  
 Since version MBU 2.0 the software is maintained by CLS.
 
-### Purpose of this document
+### 1.2 Purpose of this document
 
 This document shows the result of the test session performed following the validation plan.
 
-### Document organisation
+### 1.3 Document organisation
 
 Section 1: this introduction  
 Section 2: Cent OS 7 results
 
-### Applicable and Reference Documents
+### 1.4 Applicable and Reference Documents
 
 #### Applicable Documents
 
@@ -31,11 +31,11 @@ The following documents provide useful reference information associated with thi
 R-1 &nbsp;&nbsp;&nbsp;	ES-RS-ESA-SY-0007	Mission Requirements Document for the European Radar Observatory Sentinel-1, Issue 1/4, ESA, July 11, 2005  
 R-2	&nbsp;&nbsp;&nbsp; Lotfi A., Lefevre M., Hauser D., Chapron B., Collard F., “The impact of using the upgraded processing of ASAR Level 2 wave products in the assimilation system”, Proc. Envisat Symposium, 22-26 April 2007, Montreux  
 
-### Acronyms and Definition
+### 1.5 Acronyms and Definition
 
 None
 
-## Test Matrix
+## 2 Test Matrix
 
 The following table shows the global test matrix to present test results in a synthetic view.
 
