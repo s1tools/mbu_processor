@@ -19,7 +19,16 @@ Those Tasks Tables have to be considered by a Management Layer (not provided her
 
 The Job Orders are the real inputs of MBU.
 
- 
+Roadmap
+-------
+
+Some elements of planned evolutions of the tool are presented in [roadmap.md](roadmap.md).
+
+Documentation
+-------------
+
+Extended documentation of the MBU processor are provided in the doc directory.
+
 
 License
 -------
