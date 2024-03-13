@@ -1,0 +1,88 @@
+﻿Source;NetCDF Attr/Var Name;BUFR code destination;constant value (values not provided in NetCDF and specific to BUFR);Comment
+Const;;compressedData;1;
+Dim;oswWavenumberBinSize;numberOfSubsets;;
+Attr;firstMeasurementTime;typicalYear, typicalMonth, typicalDay, typicalHour, typicalMinute, typicalSecond;;
+Const;;masterTablesVersionNumber;27;
+Const;;localTablesVersionNumber;4;
+Attr;missionName;satelliteIdentifier;;
+Const;;satelliteInstruments;151;
+Attr;processingCenter;stationAcquisition;;
+Attr;oswAlgorithmVersion;softwareVersionNumber;;
+Filename;;stripmapIdentifier;;
+Const;;numberOfSpectraInRangeDirection;1;
+Const;;numberOfSpectraInAzimuthalDirection;1;
+Const;;indexInRangeDirection;1;
+Const;;indexInAzimuthalDirection;1;
+Attr;sourceProduct;orbitNumber;;
+Attr;statevectorVel;orbitQualifier;;
+Attr;firstMeasurementTime;year, month, day, hour, minute, second;;
+Var;oswLat;latitude;;
+Var;oswLon;longitude;;
+Var;oswHeading;directionOfMotionOfMovingObservingPlatform;;
+Const;;height;0;
+Var;oswDepth;totalWaterDepth;;
+Var;oswLandFlag;landOrSeaQualifier;;
+Var;oswLandCoverage;;;Not in BUFR
+Attr;polarisation;antennaPolarization;;
+Var;oswNrcs;normalizedRadarCrossSection;;
+Var;oswNrcsNeszCorr;;;Not in BUFR
+Var;oswNlWidth;nonlinearInverseSpectralWidth;;
+Dim;oswAngularBinSize;numberOfDirectionalBins;;
+Dim;oswWavenumberBinSize;numberOfWavelengthBins;;
+Const;;firstDirectionalBin;0;
+Const;;directionalBinStep;5;
+Const;;firstWavelengthBin;1000;
+Const;;lastWavelengthBin;30;
+Filename;;crossTrackResolution;;
+Config;;alongTrackResolution;;
+Var;oswGroundRngSize;crossTrackEstimationAreaSize;;
+Var;oswAziSize;alongTrackEstimationAreaSize;;
+Var;oswInten;singleLookComplexImageIntensity;;
+Var;oswSkew;singleLookComplexImageSkewness;;
+Var;oswKurt;singleLookComplexImageKurtosis;;
+Var;oswNv;singleLookComplexImageVariance;;
+Var;oswIncidenceAngle;radarIncidenceAngle;;
+Var;oswAzCutoff;azimuthClutterCutOff;;
+Var;oswRaCutoff;rangeCutOffWavelength;;
+Var;oswQualityFlag;qualityFlagOfSwellWaveSpectra;;
+Var;oswLookSeparationTime;;;Not in BUFR
+Var;oswSnr;signalToNoiseRatio;;Not in BUFR
+Dim;oswPartitions;#%d#partitionNumber;range(0, oswPartitions);As many bufr variables as number of partitions
+Var;oswDirmet;#%d#dominantSwellWaveDirectionOfSpectralPartition;;As many bufr variables as number of partitions
+Var;oswHs;#%d#significantSwellWaveHeightOfSpectralPartition;;As many bufr variables as number of partitions
+Var;oswHSNV;;;Not in BUFR
+Var;oswWl;#%d#dominantSwellWavelengthOfSpectralPartition;;As many bufr variables as number of partitions
+Var;oswIconf;#%d#confidenceOfInversionForEachPartitionOfSwellWaveSpectra;;As many bufr variables as number of partitions
+Var;oswAmbiFac;#%d#ambiguityRemovalFactorForSwellWavePartition;;As many bufr variables as number of partitions
+Var;oswQualityFlagPartition;#%d#qualityFlagForEachPartitionOfSwellWaveSpectra;;As many bufr variables as number of partitions
+Var;oswPhi;#%d#directionSpectral;;As many bufr variables as number of partitions
+Var;oswK;#%d#waveNumberSpectral;;As many bufr variables as number of partitions
+Var;oswQualityCrossSpectraRe;#%d#realPartOfCrossSpectraPolarGridNumberOfBins;;As many bufr variables as number of partitions
+Var;oswQualityCrossSpectraIm;#%d#imaginaryPartOfCrossSpectraPolarGridNumberOfBins;;As many bufr variables as number of partitions
+Var;oswPolSpec;#%d#waveSpectra;;As many bufr variables as number of partitions
+Var;oswPolSpecNV;;;Not in BUFR
+Var;oswPartitions;#%d#binPartitionReference;;As many bufr variables as number of partitions
+Var;oswSpecRes;#%d#shortestOceanWavelengthOnSpectralResolution;;As many bufr variables as number of partitions
+Var;oswCartSpecRe;;;Not in BUFR
+Var;oswCartSpecIm;;;Not in BUFR
+Var;oswWindSpeed;windSpeed;;
+Var;oswWindDirection;windDirection;;
+Var;oswEcmwfWindSpeed;;;Not in BUFR
+Var;oswEcmwfWindDirection;;;Not in BUFR
+Var;owsWindSeaHs;;;Not in BUFR
+Var;owsWaveAge;;;Not in BUFR
+Var;Ellips*;;;None of those variables are in BUFR (they are never filled in Netcdf)
+Var;oswTotalHs;;;Not in BUFR
+Var;oswTotalHsStdev;;;Not in BUFR
+Var;oswKx;;;Not in BUFR (encoding of spectra in Netcdf)
+Var;oswKy;;;Not in BUFR (encoding of spectra in Netcdf)
+Var;oswJx;;;Not in BUFR (encoding of spectra in Netcdf)
+Var;oswJy;;;Not in BUFR (encoding of spectra in Netcdf)
+Var;oswPclut1;;;Not in BUFR
+Var;oswPclut2;;;Not in BUFR
+Var;oswRaSizeSLC;;;Not in BUFR (for L2 to L2)
+Var;oswAzSizeSLC;;;Not in BUFR (for L2 to L2)
+att;azSamplingFreq;;;Not in BUFR
+att;raSamplingFreq;;;Not in BUFR
+att;radarFrequency;;;Not in BUFR
+att;groundVelocity;;;Not in BUFR
