@@ -7,6 +7,8 @@ Sentinel-1 WV OCN products are composed of series of NetCDF files (one NetCDF fi
 
 The tool convert every NetCDF file into one BUFR file.
 
+The expected mapping between NetCDF variables and BUFR tables is provided in doc/BUFR_variable_mapping.csv
+
 
 Usage
 -----
