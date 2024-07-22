@@ -8,7 +8,7 @@
 %define VER %(echo $CADUVER)
 %define REL %(echo $CADUREL)
 Name:           S1PD-MBU
-Version:        2.0
+Version:        2.1
 Release:        0
 Summary:        MBU Processor
 

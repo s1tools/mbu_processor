@@ -2,9 +2,12 @@ FROM centos:7
 MAINTAINER Manuel GOACOLOU <mgoacolou@cls.fr>
 
 USER root
-ARG VERSION=2.0
+ARG VERSION=2.1
 
-RUN yum -y install epel-release && yum upgrade -y
+RUN  sed -i.bak 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+     sed -i.bak 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+     yum update -y
 
 RUN yum install -y sudo wget proj proj-devel git rpm-build redhat-rpm-config make \
                    gcc gcc-gfortran xz cmake openssh-clients \
@@ -43,8 +46,9 @@ RUN wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz --no-check-cer
 
 RUN $PIP install --no-binary :all: numpy==1.16.2 && \
     $PIP install --no-deps --no-binary :all: cftime==1.0.0 && \
+    $PIP install --no-binary :all: "cython<3.0.0" && \
     $PIP install --no-binary :all: netcdf4==1.4.0 && \
-    $PIP install --no-binary :all: dateutils==0.6.11 && \
+    $PIP install --no-deps --no-binary :all: dateutils==0.6.11 && \
     $PIP install --no-binary :all: configobj==5.0.6
 
 ENV PYTHTHON_DEST_DIR=$DEST_DIR
