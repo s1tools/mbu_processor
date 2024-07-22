@@ -207,6 +207,11 @@ class NetcdfToBufr(object):
             raise mbu.const.EcCodeInternalError('Not able to codes_bufr_new_from_file')
 
     def osw_netcdf2bufr(self):
+        if not self.landWaterFlag:
+            # IPF-681: skip netcdf over ground
+            logging.info("skip {0}: over ground".format(self.nc_filename))
+            raise mbu.const.OverGroundDataError('')
+
         self.delayed_descriptor_replication = [len(self.dic_dim_value['oswPartitions']),
                                                len(self.dic_dim_value['oswAngularBinSize'])]
         ecc.codes_set_array(self.bufr, 'inputDelayedDescriptorReplicationFactor', self.delayed_descriptor_replication)

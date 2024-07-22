@@ -97,6 +97,7 @@ class Processor(object):
         ocn_saf_eproduct = self.job_order['input']['filename']
 
         self.output_bufr['burfProducts'] = list()
+        self.output_bufr['skippedProducts'] = list()
         self.ocn_product = OCNProduct(ocn_saf_eproduct)
         self.manifest = self.ocn_product.parse_manifest()
         crc_oc_nproduct = os.path.basename(ocn_saf_eproduct)[63:67]
@@ -115,6 +116,10 @@ class Processor(object):
                 raise mbu.const.BufrConversionError from e
             except mbu.const.NomenclatureError:
                 # this may be local to only one/few netCDF
+                continue
+            except mbu.const.OverGroundDataError:
+                # not an error
+                self.output_bufr['skippedProducts'].append(filename)
                 continue
             except Exception:
                 logging.error('error with product= ' + filename)
