@@ -105,7 +105,7 @@ class NetcdfToBufr(object):
         self.bufr = ecc.codes_bufr_new_from_file(self.fbufrin)
         if self.bufr is None:
             logging.error('Not able to codes_bufr_new_from_file')
-            sys.exit()
+            raise mbu.const.EcCodeInternalError('Not able to codes_bufr_new_from_file')
 
     def osw_netcdf2bufr(self):
         self.delayed_descriptor_replication = [len(self.dic_dim_value['oswPartitions']),
@@ -141,7 +141,7 @@ class NetcdfToBufr(object):
         if info is None:
             logging.error("Source product do not math the SAFE name nomenclature: "
                           "{0}".format(self.dic_attr_value['sourceProduct']))
-            sys.exit(mbu.const.EXIT_PB)
+            raise mbu.const.NomenclatureError('Bad source Product name')
 
         ecc.codes_set(self.bufr, 'orbitNumber', int(info.groupdict()["orbit"]))
         ecc.codes_set(self.bufr, 'orbitQualifier', self.orbitQualifier)

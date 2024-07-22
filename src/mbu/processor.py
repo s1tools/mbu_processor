@@ -110,6 +110,12 @@ class Processor(object):
                 encode_ocn_to_bufr = obj_nc2bufr.osw_netcdf2bufr()
                 # print encodeOCNtoBUFR
                 self.output_bufr['burfProducts'].append(encode_ocn_to_bufr)
+            except mbu.const.EcCodeInternalError as e:
+                # no reason to continue
+                raise mbu.const.BufrConversionError from e
+            except mbu.const.NomenclatureError:
+                # this may be local to only one/few netCDF
+                continue
             except Exception:
                 logging.error('error with product= ' + filename)
                 logging.error('exception', exc_info=True)
