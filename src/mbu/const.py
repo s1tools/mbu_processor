@@ -4,6 +4,10 @@ EXIT_OK = 0
 EXIT_INCOMPLETE = 127
 EXIT_PB = 128
 
+EXIT_LOG = {EXIT_OK: 'Stop %d SUCCESS' % EXIT_OK,
+            EXIT_INCOMPLETE: 'Stop %d INCOMPLETE' % EXIT_INCOMPLETE,
+            EXIT_PB: 'Stop %d FAILURE' % EXIT_PB}
+
 SAFE_PRODOUCTS_RE = r"(?P<mission>.{3})" \
                     r"_(?P<acquisition_mode>.{2})" \
                     r"_(?P<product_type>.{3})(?P<resolution>.)" \
@@ -25,3 +29,15 @@ OUTPUT_CDF_RE = r"(?P<mission>.{3})-(?P<swath>\w*)-(?P<prodtype>(ocn))" \
 
 TIME_CDF_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 TIME_SAFE_FORMAT = "%Y%m%dT%H%M%S"
+
+
+class BufrConversionError(Exception):
+    pass
+
+
+class NomenclatureError(Exception):
+    pass
+
+
+class EcCodeInternalError(Exception):
+    pass

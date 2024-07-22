@@ -7,6 +7,7 @@ import time
 import traceback
 import xml.etree.ElementTree
 
+import mbu.const
 import mbu.processor
 import mbu
 
@@ -60,11 +61,18 @@ def cmdline():
         x.parse_job_order()
         x.start_core()
         x.prepare_outputs()
-        exit_code = 0
+        exit_code = mbu.const.EXIT_OK
+        if len(x.manifest['ntcdfFilename']) != len(x.output_bufr['burfProducts']):
+            exit_code = mbu.const.EXIT_INCOMPLETE
+        if len(x.output_bufr['burfProducts']) == 0:
+            exit_code = mbu.const.EXIT_PB
+    except mbu.const.BufrConversionError:
+        exit_code = mbu.const.EXIT_PB
     except:
         logging.error("General exception")
         logging.error(traceback.format_exc())
-        exit_code = 1
+        exit_code = mbu.const.EXIT_PB
     excen = time.time()
     logging.info("Run completed in %s seconds:", excen - excst)
+    logging.info(mbu.const.EXIT_LOG[exit_code])
     sys.exit(exit_code)
