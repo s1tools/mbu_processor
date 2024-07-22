@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os
+import re
 import sys
 import traceback
 from dateutil.parser import parse as parse_date
@@ -9,6 +10,7 @@ import numpy as np
 from netCDF4 import Dataset
 
 import mbu.config
+import mbu.const
 import eccodes as ecc
 
 along_track_resolution = mbu.config.ini.get('ocnVariable', 'alongTrackResolution')
@@ -234,7 +236,14 @@ class NetcdfToBufr(object):
         ecc.codes_set_long(self.bufr, 'numberOfSpectraInAzimuthalDirection', 1)
         ecc.codes_set_long(self.bufr, 'indexInRangeDirection', 1)
         ecc.codes_set_long(self.bufr, 'indexInAzimuthalDirection', 1)
-        ecc.codes_set(self.bufr, 'orbitNumber', int(self.dic_attr_value['sourceProduct'].split('_')[8]))
+
+        info = re.match(mbu.const.SAFE_PRODOUCTS_RE, self.dic_attr_value['sourceProduct'])
+        if info is None:
+            logging.error("Source product do not math the SAFE name nomenclature: "
+                          "{0}".format(self.dic_attr_value['sourceProduct']))
+            sys.exit(mbu.const.EXIT_PB)
+
+        ecc.codes_set(self.bufr, 'orbitNumber', int(info.groupdict()["orbit"]))
         ecc.codes_set(self.bufr, 'orbitQualifier', self.orbitQualifier)
         ecc.codes_set(self.bufr, 'year', first_measurement_time.year)
         ecc.codes_set(self.bufr, 'month', first_measurement_time.month)
