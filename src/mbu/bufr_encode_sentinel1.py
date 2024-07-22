@@ -4,7 +4,7 @@ import os
 import re
 import sys
 import traceback
-from dateutil.parser import parse as parse_date
+from datetime import datetime
 
 import numpy as np
 from netCDF4 import Dataset
@@ -118,7 +118,7 @@ class NetcdfToBufr(object):
         ecc.codes_set_array(self.bufr, 'inputDelayedDescriptorReplicationFactor', self.delayed_descriptor_replication)
         ecc.codes_set(self.bufr, 'compressedData', 1)
         ecc.codes_set(self.bufr, 'numberOfSubsets', len(self.dic_dim_value['oswWavenumberBinSize']))
-        first_measurement_time = parse_date(self.dic_attr_value['firstMeasurementTime'], ignoretz=True)
+        first_measurement_time = datetime.strptime(self.dic_attr_value['firstMeasurementTime'], "%Y-%m-%dT%H:%M:%S.%fZ")
         ecc.codes_set(self.bufr, 'typicalYear', first_measurement_time.year)
         ecc.codes_set(self.bufr, 'typicalMonth', first_measurement_time.month)
         ecc.codes_set(self.bufr, 'typicalDay', first_measurement_time.day)
