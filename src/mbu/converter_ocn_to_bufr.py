@@ -62,7 +62,8 @@ def cmdline():
         x.start_core()
         x.prepare_outputs()
         exit_code = mbu.const.EXIT_OK
-        if len(x.manifest['ntcdfFilename']) != len(x.output_bufr['burfProducts']):
+        processed_product_count = len(x.output_bufr['burfProducts']) + len(x.output_bufr['skippedProducts'])
+        if len(x.manifest['ntcdfFilename']) != processed_product_count:
             exit_code = mbu.const.EXIT_INCOMPLETE
         if len(x.output_bufr['burfProducts']) == 0:
             exit_code = mbu.const.EXIT_PB

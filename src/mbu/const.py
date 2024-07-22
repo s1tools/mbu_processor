@@ -41,3 +41,7 @@ class NomenclatureError(Exception):
 
 class EcCodeInternalError(Exception):
     pass
+
+
+class OverGroundDataError(Exception):
+    pass
