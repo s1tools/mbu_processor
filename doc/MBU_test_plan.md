@@ -279,11 +279,9 @@ WD_MBU_PROC_0202AC results with 0 code
 
 - Check QCTest results. all inspection must be successfull.
 
-QCTests was introduced during 3.1 development and reports some error.
+QCTests was introduced during 3.1 development. it must be run on 2.0 results.
 
-Checks must take into account the status of the 2.0 results. 
-
-No conge between 2.0 and 2.1 pdf reports. 
+No change between 2.0 and 2.1 pdf reports. 
 
 ```
 evince report.pdf
