@@ -84,17 +84,22 @@ For CentOS 7.8 / RHEL 7
 
 ### 2.2 Installation procedure
 
-The NetCDF to Bufr transformer is a full consistent RPM containing software and its dependencies as described in Software requirements section.  
+The NetCDF to Bufr transformer is a full consistent RPM containing software and its dependencies as described in Software 
+requirements section.  
+
 As root user:
-> yum install -y /path/to/S1PD-MBU-3.0-0.x86_64.rpm
+```
+yum install -y /path/to/S1PD-MBU-2.1-0.x86_64.rpm
+```
 
 ## 3 User Manual
 
 ### 3.1 Purpose of the tool
 
 The MBU processor (Meteo BUffer data) allows to convert NetCDF files from WV-OCN products to BUFR format.  
-The core BUFR converter has been implemented by ECMWF and used the library ECCODES (https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIBAPI (Figure 1)  
-Change with 3.0: new quality flags added for swell partitions and swell inversion in exported Bufr. At the time of writing, eccodes do not contains new codes for new quality flags yet.
+
+The core BUFR converter has been implemented by ECMWF and used the library ECCODES 
+(https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIBAPI (Figure 1)  
 
 ### 3.2 Architecture
 
@@ -106,15 +111,28 @@ INPUT: NETCDF => | bufr_encode_sentinel1               |=> OUTPUT: BUFR
 ```
 *Figure 1 - Sample code provided by ECMWF*
 
-ESA has implemented the wrapper interface for the PDGS (Figure 2). It takes as input  a working directory including SAFE product and a Joborder file to perform the conversion.
+ESA has implemented the wrapper interface for the PDGS (Figure 2). It takes as input  a working directory including 
+SAFE product and a Joborder file to perform the conversion.
+
 ![Figure 2](https://github.com/s1tools/mbu_processor/blob/upload_documentation/doc/MBU_installation_manual_fig-2.png)  
+
 *Figure 2 - Wrapping of WV OCN to BUFR*
 
 ### 3.3 Configuration
 
 It is not expected that the user changes the configuration. Inner configuration is embedded in the MBU python package.
 
-### 3.4 Example of manual operation
+### 3.4 Exit code
+
+As describe in [IPF-ICD] MBUProcessor manage 3 type of exit code:
+
+| Value | Meaning                                                     |
+|-------|-------------------------------------------------------------|
+| 0     | SUCCESS : skipped netcdf for land flag reason are not error |
+| 128   | ERROR: failed to produce bufr                               |
+| 127   | INCOMPLETE, some netcdf where skipped due to error          |
+
+### 3.5 Example of manual operation
 
 To run the MBU conversion from a JobOrder file, proceed as follows: 
 ```
@@ -125,7 +143,8 @@ The output files will be available as defined in the Output section of the JobOr
 To run the MBU conversion from a NetCDF file, proceed as follows: 
 ```
 bufr_encode_sentinel1 --nc2bufr path/to/the/netCDF/file.nc output_directory CRC_ID  
-*example*:  
+
+# example:  
 bufr_encode_sentinel1 --nc2bufr /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA/WD_MBU_PROC-000001/S1B_WV_OCN__2SSV_20190628T190957_20190628T191606_016900_01FCE3_C26C.SAFE/measurement/s1b-wv2-ocn-vv-20190628t191435-20190628t191438-016900-01fce3-020.nc /tmp/ C26C
 ```
 

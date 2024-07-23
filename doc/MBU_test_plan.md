@@ -112,28 +112,32 @@ docker run -v /path/to/rpm:/venv -v /path/to/bufr/TEST_DATA:/data/GIOVANNA/BUILD
 -	MBU RPM for RH/CO 7
 -	TEST DATA provided with MBU 1.2.0:
 
-| Name                      | Description                                                   |
-|---------------------------|---------------------------------------------------------------|
-| WD_MBU_PROC-000001  	     | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
-| WD_MBU_PROC-000002        | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
-| WD_MBU_PROC-000003        | Working directory (JobOrder + NetCDF) provided with MBU 1.2.  |
-| WD_MBU_PROC_00BDBA        | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
-| WD_MBU_PROC-0122F4_IPF290 | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
-| WD_MBU_PROC_020265        | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
-| WD_MBU_PROC_0202AC        | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
-| WD_MBU_PROC_024190_IPF290 | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| Name                      | L1 type  | Description                                                   |
+|---------------------------|----------|---------------------------------------------------------------|
+| WD_MBU_PROC-000001        | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| WD_MBU_PROC-000002        | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| WD_MBU_PROC-000003        | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.  |
+| WD_MBU_PROC_00BDBA        | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| WD_MBU_PROC-0122F4_IPF290 | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| WD_MBU_PROC_020265        | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| WD_MBU_PROC_0202AC        | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
+| WD_MBU_PROC_024190_IPF290 | SL2      | Working directory (JobOrder + NetCDF) provided with MBU 1.2.0 |
 
+*Table 2a: Test data*
 
 -	TEST DATA provided with MBU 2.1.0:
 
-| Name                      | Description                                                   |
-|---------------------------|---------------------------------------------------------------|
-| WD_MBU_PROC_IPF673        | OCN product from SLC instead of SL2 (IPF >= 003.80)           |
-| WD_MBU_PROC_IPF674        | return status for imcomplet and invalid processes             |
-| WD_MBU_PROC_IPF681        | OCN partially over land                                       |
+| Name               | L1 type | Description                                         |
+|--------------------|---------|-----------------------------------------------------|
+| WD_MBU_PROC_IPF673 | SLC     | OCN product from SLC instead of SL2 (IPF >= 003.80) |
+| WD_MBU_PROC_IPF674 | SLC     | return status for imcomplet and invalid processes   |
+| WD_MBU_PROC_IPF681 | SLC     | OCN partially over land (first 2 imagettes on land) |
+| WD_MBU_PROC_SL2_TT | SL2     | from IPF 003.80 with SL2 intermediate L1 product    |
 
+*Table 2b: Test data*
 
-*Table 2: Test data*
+For IPF681 (dataset partially over land) the ship of imagette is based on the value of the oswLandFlag,
+which is raise when at least 10% of processed data is over land.
 
 ### 3.2 Output
 #### Output Data
@@ -149,6 +153,13 @@ The bufr files must be present.
 All INTERNALLOGS files must finish with SUCCESS log except WD_MBU_PROC_IPF674 witch must return INCOMPLETE.
 
 All bufr files must be valid according to QCTest Tool.
+
+About QCTests checks:
+   - check consistencie between starts date in name of bufr file and dates difines in it.
+   - checks constant valuesas for instance (masterTablesVersionNumber, localTablesVersionNumber, ...)
+   - checks file name nomenclature
+   - checks expected variables
+   - checks not expected variables
 
 ### 3.3 Starting Conditions
 Installation test must be done without error.  
@@ -283,8 +294,9 @@ QCTests was introduced during 3.1 development. it must be run on 2.0 results.
 
 No change between 2.0 and 2.1 pdf reports. 
 
+for each dataset:
 ```
-evince report.pdf
+evince bufr.pdf
 ```
 
 ## 4 Non regression Test
@@ -358,38 +370,78 @@ The test cases are the following:
 ### 4.6 Detailed test steps
 
 The following steps allows to perform the non-regression tests.
+
 -	Run MBUprocessor on all JobOrder with 2.0
 ```
 make run_test
-docker run --rm \
-          -v /home/mgoacolou/pyve/docker_IPF/src/mbu_processor/scripts/..:/home/user \
-  -v /home/mgoacolou:/home/mgoacolou \
-  -v /home/mgoacolou/data/TEST_DATA_1.2:/data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA \
-  -v /net:/net:slave \
-  -ti registry.brest.cls.fr/esa/docker_ipf:test_mbu bash
-bash-4.2$ cd scripts/
-bash-4.2$ bash run_jos.sh 2.0
-Loaded plugins: fastestmirror, ovl
+docker run --rm -ti \
+     -v /net:/net:slave \
+     -v /net/sentinel1/tmp/mgoacolou/test_mbu/2.0/TEST_DATA:/data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA \
+     registry-ext.cls.fr:443/esa_ipf_s1/ipf-s1-loppy/mbu:2.0 \
+     bash
+bash-4.2$ for JO in $(find /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA -name "JobOrder*xml")
+ do /usr/local/components/MBU-2.0/bin/MBUprocessor $JO
+  result=$?; dir=$(dirname $JO)
+   WD=$(basename $dir)
+   echo $WD results with $result code
+done
+
 ...
 ```
 
 -	Run MBUprocessor on all JobOrder with 2.1
 ```
 make run_test
-docker run --rm \
-          -v /home/mgoacolou/pyve/docker_IPF/src/mbu_processor/scripts/..:/home/user \
-  -v /home/mgoacolou:/home/mgoacolou \
-  -v /home/mgoacolou/data/TEST_DATA_1.2:/data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA \
-  -v /net:/net:slave \
-  -ti registry.brest.cls.fr/esa/docker_ipf:test_mbu bash
-bash-4.2$ cd scripts/
-bash-4.2$ bash run_jos.sh 2.1
-Loaded plugins: fastestmirror, ovl
+docker run --rm -ti \
+     -v /net:/net:slave \
+     -v /net/sentinel1/tmp/mgoacolou/test_mbu/2.1/TEST_DATA:/data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA \
+     registry-ext.cls.fr:443/esa_ipf_s1/ipf-s1-loppy/mbu:2.1 \
+     bash
+bash-4.2$ for JO in $(find /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA -name "JobOrder*xml")
+ do /usr/local/components/MBU-2.1/bin/MBUprocessor $JO
+  result=$?; dir=$(dirname $JO)
+   WD=$(basename $dir)
+   echo $WD results with $result code
+done
 ...
 ```
 -	Run comparaison script
 ```
-bash run_compare.sh /home/mgoacolou/data/TEST_DATA_1.2 2.0 2.1 > MBU_test_result_2.0_vs_2.1.txt
+$ cat run_compare.sh 
+data_path=$1
+VERSION_REF=$2
+VERSION=$3
+
+for jo in $(find ${data_path}/${VERSION_REF}/TEST_DATA -name "JobOrder*xml")
+do
+    workdir=$(dirname $jo)
+    orig_result_dir=${workdir}
+    test_result_dir=${data_path}/${VERSION}/TEST_DATA/$(basename $workdir)
+
+    echo $workdir
+    echo "-------------------------------"
+
+   for bufr in $(find $orig_result_dir/ -name "*bufr")
+
+   do
+
+       echo $bufr
+
+       bufr_dump -p $bufr > /tmp/mbu_${VERSION_REF}
+
+       echo $test_result_dir/$(basename $bufr)
+
+       bufr_dump -p $test_result_dir/$(basename $bufr) > /tmp/mbu_${VERSION}
+
+       diff -U 3 /tmp/mbu_${VERSION_REF} /tmp/mbu_${VERSION}
+
+       echo ""
+
+   done
+
+done
+
+$ bash run_compare.sh /net/sentinel1/tmp/mgoacolou/test_mbu 2.0 2.1
 ```
 
 
