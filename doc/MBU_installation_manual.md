@@ -99,9 +99,7 @@ yum install -y /path/to/S1PD-MBU-2.1-0.x86_64.rpm
 The MBU processor (Meteo BUffer data) allows to convert NetCDF files from WV-OCN products to BUFR format.  
 
 The core BUFR converter has been implemented by ECMWF and used the library ECCODES 
-(https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIBAPI (Figure 1)  
-
-### 3.2 Architecture
+(https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIB API (Figure 1)  
 
 ```
                  ---------------------------------------
@@ -109,7 +107,11 @@ INPUT: NETCDF => | bufr_encode_sentinel1               |=> OUTPUT: BUFR
                  | library: eccodes (wrapping gribapi) |
                  ---------------------------------------
 ```
-*Figure 1 - Sample code provided by ECMWF*
+*Figure 1 - Sample code provided by ECMWF for generation of BUFR*
+
+
+### 3.2 Architecture
+
 
 ESA has implemented the wrapper interface for the PDGS (Figure 2). It takes as input  a working directory including 
 SAFE product and a Joborder file to perform the conversion.
@@ -120,19 +122,30 @@ SAFE product and a Joborder file to perform the conversion.
 
 ### 3.3 Configuration
 
-It is not expected that the user changes the configuration. Inner configuration is embedded in the MBU python package.
+The inner configuration of MBU allows to specify the mapping between NetCDF variables and BUFR content.
+It is not expected that the user changes the configuration as it will induce large change of the BUFR content.
 
 ### 3.4 Exit code
 
-As describe in [IPF-ICD] MBUProcessor manage 3 type of exit code:
+As describe in [IPF-ICD] MBUProcessor manages three types of exit code:
 
-| Value | Meaning                                                     |
-|-------|-------------------------------------------------------------|
-| 0     | SUCCESS : skipped netcdf for land flag reason are not error |
-| 128   | ERROR: failed to produce bufr                               |
-| 127   | INCOMPLETE, some netcdf where skipped due to error          |
+| Value | Meaning    | comment                                                                                                                 |
+|-------|------------|-------------------------------------------------------------------------------------------------------------------------|
+| 0     | SUCCESS    | Processing is nominal. The NetCDF over land are not processed (as expected) and the bufr files are not generated        |
+| 128   | ERROR      | failed to produce bufr                                                                                                  |
+| 127   | INCOMPLETE | some netcdf where skipped due to error                                                                                  |
 
-### 3.5 Example of manual operation
+
+
+### 3.5 Generation of Job Order
+
+The generation of JobOrder for MBU is not described here.
+The responsibility to generate JobOrder is on a "Management Layer" (refer to [IPF-ICD]) that is out of scope of this processor.
+
+However, user can manually generate a JobOrder using the one provided as part of the test data set as an example.
+
+
+### 3.6 Example of manual operation
 
 To run the MBU conversion from a JobOrder file, proceed as follows: 
 ```
