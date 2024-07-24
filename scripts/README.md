@@ -34,7 +34,7 @@ run in developper mode
 # CentOS 7
 docker run -v /path/to/MBUProcess:/src \
            -v /net/sentinel1/IPF_MAINTENANCE/ipf_test/datasets/python3:/data/workspace/processing:slave \
-           -e ECCODES_DEFINITION_PATH=/src/src/mbu/conf:/usr/local/components/MBU-3.0/share/eccodes/definitions \
+           -e ECCODES_DEFINITION_PATH=/src/src/mbu/conf:/usr/local/components/MBU-3.1/share/eccodes/definitions \
 	   -ti registry.brest.cls.fr/esa/mbu_c7:${USER} \
 	   bash
 ```

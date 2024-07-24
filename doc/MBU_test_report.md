@@ -39,17 +39,17 @@ None
 
 The following table shows the global test matrix to present test results in a synthetic view.
 
-|Test|Description|Test Results|Final Status|  
-|----|---------|------------------|--------------------|  
-|MBU_INS_002	|CentOS 7 installation procedure|PASSED|	PASSED|  
-|MBU_INS_004	|Centos 7 - MBUProcessor|PASSED	|PASSED|  
-|MBU_REG_009	|Centos 7  - Non regression WD_MBU_PROC-000001|  	0 PASSED 26 FAILED	|PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected. |
-|MBU_REG_010	|Centos 7  - Non regression WD_MBU_PROC-000002|	 4 PASSED 62 FAILED	|PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
-|MBU_REG_011	|Centos 7  - Non regression WD_MBU_PROC-000003|	 33 PASSED 115 FAILED|	PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
-|MBU_REG_012	|Centos 7  - Non regression WD_MBU_PROC_00BDBA| 6 PASSED 40 FAILED|	PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
-|MBU_REG_013	|Centos 7  - Non regression WD_MBU_PROC-0122F4_IPF290|	23 PASSED 53 FAILED|	PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
-|MBU_REG_014	|Centos 7  - Non regression WD_MBU_PROC_020265|	10 PASSED 14 FAILED|	PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
-|MBU_REG_015	|Centos 7  - Non regression WD_MBU_PROC_0202AC|	22 PASSED 46 FAILED|	PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
-|MBU_REG_016	|Centos 7  - Non regression WD_MBU_PROC_024190_IPF290|	21 PASSED 77 FAILED|	PASSED The failed tests are related to a change in the way to managed fill value in MBU Process. This behavior is expected|
+| Test        | Description                                          | Test Results | Final Status |  
+|-------------|------------------------------------------------------|--------------|--------------|  
+| MBU_INS_002 | CentOS 7 installation procedure                      | PASSED       | PASSED       |  
+| MBU_INS_004 | Centos 7 - MBUProcessor                              | PASSED       | PASSED       |  
+| MBU_REG_009 | Centos 7  - Non regression WD_MBU_PROC-000001        | xxx          | xxx          |
+| MBU_REG_010 | Centos 7  - Non regression WD_MBU_PROC-000002        | xxx          | xxx          |
+| MBU_REG_011 | Centos 7  - Non regression WD_MBU_PROC-000003        | xxx          | xxx          |
+| MBU_REG_012 | Centos 7  - Non regression WD_MBU_PROC_00BDBA        | xxx          | xxx          |
+| MBU_REG_013 | Centos 7  - Non regression WD_MBU_PROC-0122F4_IPF290 | xxx          | xxx          |
+| MBU_REG_014 | Centos 7  - Non regression WD_MBU_PROC_020265        | xxx          | xxx          |
+| MBU_REG_015 | Centos 7  - Non regression WD_MBU_PROC_0202AC        | xxx          | xxx          |
+| MBU_REG_016 | Centos 7  - Non regression WD_MBU_PROC_024190_IPF290 | xxx          | xxx          |
 
 *Table 1: Test matrix*

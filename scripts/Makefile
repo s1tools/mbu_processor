@@ -23,7 +23,7 @@ dev_run:
            -v /net/sentinel1/IPF_MAINTENANCE/ipf_test/datasets/python3:/data/workspace/processing:slave \
            -v /net:/net:slave \
            -v $(HOME):$(HOME) \
-           -e ECCODES_DEFINITION_PATH=/src/src/mbu/conf:/usr/local/components/MBU-3.0/share/eccodes/definitions \
+           -e ECCODES_DEFINITION_PATH=/src/src/mbu/conf:/usr/local/components/MBU-3.1/share/eccodes/definitions \
 	   -ti $(REGISTER) \
 	   bash
 

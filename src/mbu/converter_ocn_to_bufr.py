@@ -11,7 +11,7 @@ import mbu.const
 import mbu.processor
 import mbu
 
-VERSION = "3.0"
+VERSION = "3.1"
 
 
 def cmdline():

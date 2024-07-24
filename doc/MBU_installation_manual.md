@@ -36,7 +36,7 @@ Section 4: the development manual
 
 The following documents provide useful reference information associated with this document.  These documents are to be used for information only.  Changes to the date/revision number (if provided) do not make this document out of date.
 
-| [BUFR-TR] | NetCDF to BUFR 3.0 Validation Report | DI-MPC-BUFR-VR MPC-0500 version 1.0 |
+| [BUFR-TR] | NetCDF to BUFR 3.1 Validation Report | DI-MPC-BUFR-VR MPC-0500 version 1.0 |
 |-----------|--------------------------------------|-------------------------------------|
 
 ### 1.5 Acronyms and Definition
@@ -52,51 +52,56 @@ The following documents provide useful reference information associated with thi
 
 This section describes the minimum hardware required to install and operate the software.
 
-| Type | Description |
+| Type      | Description |
 |-----------|-------------|
-| Processor | x86_64 |
-|RAM | 1Go|
-|Storage|1Go|
-|Network|N/A|
-|Other|-|
+| Processor | x86_64      |
+| RAM       | 1Go         |
+| Storage   | 1Go         |
+| Network   | N/A         |
+| Other     | -           |
 
 #### Operating System
 
 This section describes the minimum operating system required to install and operate the software.
 
-| Type | Description |
-|--------|--------------------------------------------|
-| OS | CentOS 7 / Red Hat Enterprise Linux 7.8 |
+| Type   | Description                             |
+|--------|-----------------------------------------|
+| OS     | CentOS 7 / Red Hat Enterprise Linux 7.8 |
 
 #### Software requirements
 
 This section describes the minimum software components required to install and operate the software. They are provided by CLS together with the software.
 For CentOS 7.8 / RHEL 7
 
-| Type | Description |
-|------------------|--------------------------------------------|
-| netcdf-4.3.3.1-5.el7.x86_64 | NetCDF library |
-| hdf5-1.8.12-11.el7.x86_64 |	HDF5 library|
-|blas-3.4.2-8.el7.x86_64 |	The Basic Linear Algebra Subprograms library (dependency of Numpy) |
-| libgfortran-4.8.5-44.el7.x86_64	| This package contains Fortran shared library which is needed to run Fortran dynamically linked programs contained in Numpy. |
-| lapack-3.4.2-8.el7.x86_64	| LAPACK (Linear Algebra PACKage) (dependency of Numpy) |
-| atlas-3.10.1-12.el7.x86_64	| The ATLAS (Automatically Tuned Linear Algebra Software) (dependency of Numpy) |
+| Type                            | Description                                                                                                                 |
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| netcdf-4.3.3.1-5.el7.x86_64     | NetCDF library                                                                                                              |
+| hdf5-1.8.12-11.el7.x86_64       | HDF5 library                                                                                                                |
+| blas-3.4.2-8.el7.x86_64         | The Basic Linear Algebra Subprograms library (dependency of Numpy)                                                          |
+| libgfortran-4.8.5-44.el7.x86_64 | This package contains Fortran shared library which is needed to run Fortran dynamically linked programs contained in Numpy. |
+| lapack-3.4.2-8.el7.x86_64       | LAPACK (Linear Algebra PACKage) (dependency of Numpy)                                                                       |
+| atlas-3.10.1-12.el7.x86_64      | The ATLAS (Automatically Tuned Linear Algebra Software) (dependency of Numpy)                                               |
 
 ### 2.2 Installation procedure
 
-The NetCDF to Bufr transformer is a full consistent RPM containing software and its dependencies as described in Software requirements section.  
+The NetCDF to Bufr transformer is a full consistent RPM containing software and its dependencies as described in Software 
+requirements section.  
+
 As root user:
-> yum install -y /path/to/S1PD-MBU-3.0-0.x86_64.rpm
+```
+yum install -y /path/to/S1PD-MBU-3.1-0.x86_64.rpm
+```
 
 ## 3 User Manual
 
 ### 3.1 Purpose of the tool
 
 The MBU processor (Meteo BUffer data) allows to convert NetCDF files from WV-OCN products to BUFR format.  
-The core BUFR converter has been implemented by ECMWF and used the library ECCODES (https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIBAPI (Figure 1)  
-Change with 3.0: new quality flags added for swell partitions and swell inversion in exported Bufr. At the time of writing, eccodes do not contains new codes for new quality flags yet.
 
-### 3.2 Architecture
+The core BUFR converter has been implemented by ECMWF and used the library ECCODES 
+(https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIB API (Figure 1)
+
+Change with 3.1: new quality flags added for swell partitions and swell inversion in exported Bufr. At the time of writing, eccodes do not contains new codes for new quality flags yet.
 
 ```
                  ---------------------------------------
@@ -104,17 +109,45 @@ INPUT: NETCDF => | bufr_encode_sentinel1               |=> OUTPUT: BUFR
                  | library: eccodes (wrapping gribapi) |
                  ---------------------------------------
 ```
-*Figure 1 - Sample code provided by ECMWF*
+*Figure 1 - Sample code provided by ECMWF for generation of BUFR*
 
-ESA has implemented the wrapper interface for the PDGS (Figure 2). It takes as input  a working directory including SAFE product and a Joborder file to perform the conversion.
+
+### 3.2 Architecture
+
+
+ESA has implemented the wrapper interface for the PDGS (Figure 2). It takes as input  a working directory including 
+SAFE product and a Joborder file to perform the conversion.
+
 ![Figure 2](https://github.com/s1tools/mbu_processor/blob/upload_documentation/doc/MBU_installation_manual_fig-2.png)  
+
 *Figure 2 - Wrapping of WV OCN to BUFR*
 
 ### 3.3 Configuration
 
-It is not expected that the user changes the configuration. Inner configuration is embedded in the MBU python package.
+The inner configuration of MBU allows to specify the mapping between NetCDF variables and BUFR content.
+It is not expected that the user changes the configuration as it will induce large change of the BUFR content.
 
-### 3.4 Example of manual operation
+### 3.4 Exit code
+
+As describe in [IPF-ICD] MBUProcessor manages three types of exit code:
+
+| Value | Meaning    | comment                                                                                                                 |
+|-------|------------|-------------------------------------------------------------------------------------------------------------------------|
+| 0     | SUCCESS    | Processing is nominal. The NetCDF over land are not processed (as expected) and the bufr files are not generated        |
+| 128   | ERROR      | failed to produce bufr                                                                                                  |
+| 127   | INCOMPLETE | some netcdf where skipped due to error                                                                                  |
+
+
+
+### 3.5 Generation of Job Order
+
+The generation of JobOrder for MBU is not described here.
+The responsibility to generate JobOrder is on a "Management Layer" (refer to [IPF-ICD]) that is out of scope of this processor.
+
+However, user can manually generate a JobOrder using the one provided as part of the test data set as an example.
+
+
+### 3.6 Example of manual operation
 
 To run the MBU conversion from a JobOrder file, proceed as follows: 
 ```
@@ -125,7 +158,8 @@ The output files will be available as defined in the Output section of the JobOr
 To run the MBU conversion from a NetCDF file, proceed as follows: 
 ```
 bufr_encode_sentinel1 --nc2bufr path/to/the/netCDF/file.nc output_directory CRC_ID  
-*example*:  
+
+# example:  
 bufr_encode_sentinel1 --nc2bufr /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA/WD_MBU_PROC-000001/S1B_WV_OCN__2SSV_20190628T190957_20190628T191606_016900_01FCE3_C26C.SAFE/measurement/s1b-wv2-ocn-vv-20190628t191435-20190628t191438-016900-01fce3-020.nc /tmp/ C26C
 ```
 

@@ -1,6 +1,6 @@
-%{!?__python3: %global __python3 /usr/local/components/MBU-3.0/bin/python3.9}
+%{!?__python3: %global __python3 /usr/local/components/MBU-3.1/bin/python3.9}
 %global __python %{__python3}
-%global _pylib /usr/local/components/MBU-3.0/lib/python3.9/site-packages
+%global _pylib /usr/local/components/MBU-3.1/lib/python3.9/site-packages
 
 # Turn off the brp-python-bytecompile script
 %global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
@@ -8,7 +8,7 @@
 %define VER %(echo $CADUVER)
 %define REL %(echo $CADUREL)
 Name:           S1PD-MBU
-Version:        3.0
+Version:        3.1
 Release:        0
 Summary:        MBU Processor
 
@@ -102,7 +102,7 @@ function logCmd {
 
 
 INSTALL_DIR="/usr/local/components/"
-VERSIONNED_FOLDER_NAME="MBU-3.0"
+VERSIONNED_FOLDER_NAME="MBU-3.1"
 UNVERSIONNED_FOLDER_NAME="MBU"
 
 VERSIONNED_PROJECT_HOME=${INSTALL_DIR}/${VERSIONNED_FOLDER_NAME}
