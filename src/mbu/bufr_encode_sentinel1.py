@@ -20,8 +20,8 @@ along_track_resolution = mbu.config.ini.get('ocnVariable', 'alongTrackResolution
 # |  F  |  X  |  Y  |
 # |2bits|6bits|8bits|
 #
-# noted as number in form FXXYYY in next list: starting 0 are not present du to python syntax
-# for instance 1007 -> 001007 -> F=0 X=01 Y=007
+# noted as number in form FXXYYY in next list:
+# for instance '001007' -> F=0 X=01 Y=007
 
 # If F = 0, the descriptor is an element descriptor.
 # The values of X and Y refer directly to a single entry in Table B, X indicating
@@ -42,78 +42,78 @@ along_track_resolution = mbu.config.ini.get('ocnVariable', 'alongTrackResolution
 # Table D entry.
 # numerical model.
 unexpanded_descriptors = [
-    (1007, 'satelliteIdentifier'),
-    (2019, 'satelliteInstruments'),
-    (1096, 'stationAcquisition'),
-    (25061, 'softwareVersionNumber'),
-    (5071, 'stripmapIdentifier'),
-    (5072, 'numberOfSpectraInRangeDirection'),
-    (5073, 'numberOfSpectraInAzimuthalDirection'),
-    (5074, 'indexInRangeDirection'),
-    (5075, 'indexInAzimuthalDirection'),
-    (5040, 'orbitNumber'),
-    (8075, 'orbitQualifier'),
-    (301011, 'seq: year month day'),
-    (301013, 'seq: hour minute second'),
-    (301021, 'seq: latitude longitude'),
-    (1012, 'directionOfMotionOfMovingObservingPlatform'),
-    (7002, 'height'),
-    (22063, 'totalWaterDepth'),
-    (8012, 'landOrSeaQualifier'),
-    (2104, 'antennaPolarization'),
-    (21105, 'normalizedRadarCrossSection'),
-    (42008, 'nonlinearInverseSpectralWidth'),
-    (25103, 'numberOfDirectionalBins'),
-    (25104, 'numberOfWavelengthBins'),
-    (25105, 'firstDirectionalBin'),
-    (25106, 'directionalBinStep'),
-    (25107, 'firstWavelengthBin'),
-    (25108, 'lastWavelengthBin'),
-    (11001, 'windDirection'),
-    (11002, 'windSpeed'),
-    (42006, 'waveAge'),
-    (21030, 'signalToNoiseRatio'),
-    (201130, 'add 2 bits'),
-    (202129, 'add 1 to the scale'),
-    (22022, 'heightOfWindWaves'),
-    (202000, 'end of change the scale'),
-    (201000, 'end of bit add'),
-    (2026, 'crossTrackResolution'),
-    (2027, 'alongTrackResolution'),
-    (3025, 'crossTrackEstimationAreaSize'),
-    (3026, 'alongTrackEstimationAreaSize'),
-    (40039, 'singleLookComplexImageIntensity'),
-    (40040, 'singleLookComplexImageSkewness'),
-    (40041, 'singleLookComplexImageKurtosis'),
-    (40042, 'singleLookComplexImageVariance'),
-    (2111, 'radarIncidenceAngle'),
-    (25014, 'azimuthClutterCutOff'),
-    (25189, 'rangeCutOffWavelength'),
-    (42017, 'qualityFlagOfSwellWaveSpectra'),
-    (107000, 'Delayed replication of 7 descriptors'),
-    (31001, 'delayedDescriptorReplicationFactor'),
-    (42010, 'partitionNumber'),
-    (42001, 'dominantSwellWaveDirectionOfSpectralPartition'),
-    (42002, 'significantSwellWaveHeightOfSpectralPartition'),
-    (42003, 'dominantSwellWavelengthOfSpectralPartition'),
-    (42004, 'confidenceOfInversionForEachPartitionOfSwellWaveSpectra'),
-    (42005, 'ambiguityRemovalFactorForSwellWavePartition'),
-    (42018, 'qualityFlagForEachPartitionOfSwellWaveSpectra'),
-    (113000, 'Delayed replication of 13 descriptors'),
-    (31001, 'delayedDescriptorReplicationFactor'),
-    (5030, 'directionSpectral'),
-    (201130, 'add 2 bits'),
-    (6030, 'waveNumberSpectral'),
-    (201000, 'end of change'),
-    (201131, 'add 3 bits'),
-    (21135, 'realPartOfCrossSpectraPolarGridNumberOfBins'),
-    (201000, 'end of change'),
-    (21136, 'imaginaryPartOfCrossSpectraPolarGridNumberOfBins'),
-    (201130, 'add 2 bits'),
-    (22161, 'waveSpectra'),
-    (201000, 'end of change'),
-    (42009, 'binPartitionReference'),
-    (42007, 'shortestOceanWavelengthOnSpectralResolution'),
+    ('001007', 'satelliteIdentifier'),
+    ('002019', 'satelliteInstruments'),
+    ('001096', 'stationAcquisition'),
+    ('025061', 'softwareVersionNumber'),
+    ('005071', 'stripmapIdentifier'),
+    ('005072', 'numberOfSpectraInRangeDirection'),
+    ('005073', 'numberOfSpectraInAzimuthalDirection'),
+    ('005074', 'indexInRangeDirection'),
+    ('005075', 'indexInAzimuthalDirection'),
+    ('005040', 'orbitNumber'),
+    ('008075', 'orbitQualifier'),
+    ('301011', 'seq: year month day'),
+    ('301013', 'seq: hour minute second'),
+    ('301021', 'seq: latitude longitude'),
+    ('001012', 'directionOfMotionOfMovingObservingPlatform'),
+    ('007002', 'height'),
+    ('022063', 'totalWaterDepth'),
+    ('008012', 'landOrSeaQualifier'),
+    ('002104', 'antennaPolarization'),
+    ('021105', 'normalizedRadarCrossSection'),
+    ('042008', 'nonlinearInverseSpectralWidth'),
+    ('025103', 'numberOfDirectionalBins'),
+    ('025104', 'numberOfWavelengthBins'),
+    ('025105', 'firstDirectionalBin'),
+    ('025106', 'directionalBinStep'),
+    ('025107', 'firstWavelengthBin'),
+    ('025108', 'lastWavelengthBin'),
+    ('011001', 'windDirection'),
+    ('011002', 'windSpeed'),
+    ('042006', 'waveAge'),
+    ('021030', 'signalToNoiseRatio'),
+    ('201130', 'add 2 bits'),
+    ('202129', 'add 1 to the scale'),
+    ('022022', 'heightOfWindWaves'),
+    ('202000', 'end of change the scale'),
+    ('201000', 'end of bit add'),
+    ('002026', 'crossTrackResolution'),
+    ('002027', 'alongTrackResolution'),
+    ('003025', 'crossTrackEstimationAreaSize'),
+    ('003026', 'alongTrackEstimationAreaSize'),
+    ('040039', 'singleLookComplexImageIntensity'),
+    ('040040', 'singleLookComplexImageSkewness'),
+    ('040041', 'singleLookComplexImageKurtosis'),
+    ('040042', 'singleLookComplexImageVariance'),
+    ('002111', 'radarIncidenceAngle'),
+    ('025014', 'azimuthClutterCutOff'),
+    ('025189', 'rangeCutOffWavelength'),
+    ('042017', 'qualityFlagOfSwellWaveSpectra'),
+    ('107000', 'Delayed replication of 7 descriptors'),
+    ('031001', 'delayedDescriptorReplicationFactor'),
+    ('042010', 'partitionNumber'),
+    ('042001', 'dominantSwellWaveDirectionOfSpectralPartition'),
+    ('042002', 'significantSwellWaveHeightOfSpectralPartition'),
+    ('042003', 'dominantSwellWavelengthOfSpectralPartition'),
+    ('042004', 'confidenceOfInversionForEachPartitionOfSwellWaveSpectra'),
+    ('042005', 'ambiguityRemovalFactorForSwellWavePartition'),
+    ('042018', 'qualityFlagForEachPartitionOfSwellWaveSpectra'),
+    ('113000', 'Delayed replication of 13 descriptors'),
+    ('031001', 'delayedDescriptorReplicationFactor'),
+    ('005030', 'directionSpectral'),
+    ('201130', 'add 2 bits'),
+    ('006030', 'waveNumberSpectral'),
+    ('201000', 'end of change'),
+    ('201131', 'add 3 bits'),
+    ('021135', 'realPartOfCrossSpectraPolarGridNumberOfBins'),
+    ('201000', 'end of change'),
+    ('021136', 'imaginaryPartOfCrossSpectraPolarGridNumberOfBins'),
+    ('201130', 'add 2 bits'),
+    ('022161', 'waveSpectra'),
+    ('201000', 'end of change'),
+    ('042009', 'binPartitionReference'),
+    ('042007', 'shortestOceanWavelengthOnSpectralResolution'),
 ]
 
 
@@ -218,6 +218,13 @@ class NetcdfToBufr(object):
         ecc.codes_set(self.bufr, 'compressedData', 1)
         ecc.codes_set(self.bufr, 'numberOfSubsets', len(self.dic_dim_value['oswWavenumberBinSize']))
         first_measurement_time = datetime.strptime(self.dic_attr_value['firstMeasurementTime'], "%Y-%m-%dT%H:%M:%S.%fZ")
+
+        ecc.codes_set(self.bufr, "bufrHeaderCentre", int(os.environ.get('MBU_PROCESSING_CENTER', 98)))
+        ecc.codes_set(self.bufr, 'dataCategory', int(os.environ.get('MBU_DATA_CATEGORY', 0)))
+        ecc.codes_set(self.bufr, 'dataSubCategory', int(os.environ.get('MBU_DATA_SUB_CATEGORY', 176)))
+        ecc.codes_set(self.bufr, 'masterTablesVersionNumber', 42)
+        ecc.codes_set(self.bufr, 'localTablesVersionNumber', 0)
+
         ecc.codes_set(self.bufr, 'typicalYear', first_measurement_time.year)
         ecc.codes_set(self.bufr, 'typicalMonth', first_measurement_time.month)
         ecc.codes_set(self.bufr, 'typicalDay', first_measurement_time.day)
@@ -228,14 +235,17 @@ class NetcdfToBufr(object):
         logging.info('unexpandedDescriptors and BufrTemplate can be set alternatively')
         logging.info('to choose the template for the BUFR message')
 
-        ecc.codes_set(self.bufr, 'masterTablesVersionNumber', 27)
-        ecc.codes_set(self.bufr, 'localTablesVersionNumber', 4)
-        ecc.codes_set_array(self.bufr, 'unexpandedDescriptors', [e[0] for e in unexpanded_descriptors])
+        ecc.codes_set_array(self.bufr, 'unexpandedDescriptors', [int(e[0]) for e in unexpanded_descriptors])
 
         ecc.codes_set(self.bufr, 'satelliteIdentifier', self.missionCode)
         ecc.codes_set(self.bufr, 'satelliteInstruments', 151)
         ecc.codes_set(self.bufr, 'stationAcquisition', self.dic_attr_value['processingCenter'][:3])
-        ecc.codes_set(self.bufr, 'softwareVersionNumber', self.dic_attr_value['oswAlgorithmVersion'])
+
+        # softwareVersionNumber is limited to 96bit:  12 char , must be compacted
+        softwareVersionNumber = self.dic_attr_value['oswAlgorithmVersion'].replace("S-1", "S1").replace("rev ", "")
+        assert len(softwareVersionNumber) <= 12, "softwareVersionNumber is limited to 96bit:  12 char"
+        ecc.codes_set(self.bufr, 'softwareVersionNumber', softwareVersionNumber)
+
         ecc.codes_set_long(self.bufr, 'stripmapIdentifier', self.swathId)  # ecc.CODES_MISSING_LONG)
         ecc.codes_set_long(self.bufr, 'numberOfSpectraInRangeDirection', 1)
         ecc.codes_set_long(self.bufr, 'numberOfSpectraInAzimuthalDirection', 1)
