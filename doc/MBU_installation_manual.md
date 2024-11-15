@@ -64,9 +64,9 @@ This section describes the minimum hardware required to install and operate the 
 
 This section describes the minimum operating system required to install and operate the software.
 
-| Type   | Description                             |
-|--------|-----------------------------------------|
-| OS     | CentOS 7 / Red Hat Enterprise Linux 7.8 |
+| Type | Description              |
+|------|--------------------------|
+| OS   | any docker compatible OS |
 
 #### Software requirements
 
@@ -75,21 +75,18 @@ For CentOS 7.8 / RHEL 7
 
 | Type                            | Description                                                                                                                 |
 |---------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| netcdf-4.3.3.1-5.el7.x86_64     | NetCDF library                                                                                                              |
-| hdf5-1.8.12-11.el7.x86_64       | HDF5 library                                                                                                                |
-| blas-3.4.2-8.el7.x86_64         | The Basic Linear Algebra Subprograms library (dependency of Numpy)                                                          |
-| libgfortran-4.8.5-44.el7.x86_64 | This package contains Fortran shared library which is needed to run Fortran dynamically linked programs contained in Numpy. |
-| lapack-3.4.2-8.el7.x86_64       | LAPACK (Linear Algebra PACKage) (dependency of Numpy)                                                                       |
-| atlas-3.10.1-12.el7.x86_64      | The ATLAS (Automatically Tuned Linear Algebra Software) (dependency of Numpy)                                               |
+| docker-ce                       | docker host engine and dependencies                                                                                         |
+                                               |
 
 ### 2.2 Installation procedure
 
-The NetCDF to Bufr transformer is a full consistent RPM containing software and its dependencies as described in Software 
-requirements section.  
+The NetCDF to Bufr transformer is a full consistent docker image containing software and its dependencies.
 
-As root user:
+
+As user in docker group:
 ```
-yum install -y /path/to/S1PD-MBU-3.1-0.x86_64.rpm
+docker load mbu_processing_3.1.0.tar
+docker tag mbu_processing mbu_processing:3.1
 ```
 
 ## 3 User Manual
@@ -101,7 +98,9 @@ The MBU processor (Meteo BUffer data) allows to convert NetCDF files from WV-OCN
 The core BUFR converter has been implemented by ECMWF and used the library ECCODES 
 (https://confluence.ecmwf.int/display/ECC/ecCodes+Home) a wrapping of GRIB API (Figure 1)
 
-Change with 3.1: new quality flags added for swell partitions and swell inversion in exported Bufr. At the time of writing, eccodes do not contains new codes for new quality flags yet.
+Change with 3.1: new quality flags added for swell partitions and swell inversion in exported Bufr. At the time of
+writing, eccodes used new codes for new quality flags by using version 42 of tables delivered in version 2.38.1
+of eccodes sofware.
 
 ```
                  ---------------------------------------
@@ -146,21 +145,20 @@ The responsibility to generate JobOrder is on a "Management Layer" (refer to [IP
 
 However, user can manually generate a JobOrder using the one provided as part of the test data set as an example.
 
-
 ### 3.6 Example of manual operation
 
-To run the MBU conversion from a JobOrder file, proceed as follows: 
+To run the MBU conversion from a JobOrder file, proceed as follows:
 ```
-MBUprocessor /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA/WD_MBU_PROC-000001/JobOrder.000001.xml
+docker run --rm -v {##volume_to_be_mounted##} mbu_processing:3.1 /usr/local/components/MBU/bin/MBUprocessor /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA/WD_MBU_PROC-000001/JobOrder.000001.xml
 ```
 The output files will be available as defined in the Output section of the JobOrder file.
 
-To run the MBU conversion from a NetCDF file, proceed as follows: 
+To run the MBU conversion from a NetCDF file, proceed as follows:
 ```
-bufr_encode_sentinel1 --nc2bufr path/to/the/netCDF/file.nc output_directory CRC_ID  
+docker run --rm -v {##volume_to_be_mounted##} mbu_processing:3.1 /usr/local/components/MBU/bin/bufr_encode_sentinel1 --nc2bufr path/to/the/netCDF/file.nc output_directory CRC_ID
 
 # example:  
-bufr_encode_sentinel1 --nc2bufr /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA/WD_MBU_PROC-000001/S1B_WV_OCN__2SSV_20190628T190957_20190628T191606_016900_01FCE3_C26C.SAFE/measurement/s1b-wv2-ocn-vv-20190628t191435-20190628t191438-016900-01fce3-020.nc /tmp/ C26C
+docker run --rm -v {##volume_to_be_mounted##} mbu_processing:3.1 /usr/local/components/MBU/bin/bufr_encode_sentinel1 --nc2bufr /data/GIOVANNA/BUILD_RPM_1.2.0/TEST_DATA/WD_MBU_PROC-000001/S1B_WV_OCN__2SSV_20190628T190957_20190628T191606_016900_01FCE3_C26C.SAFE/measurement/s1b-wv2-ocn-vv-20190628t191435-20190628t191438-016900-01fce3-020.nc /tmp/ C26C
 ```
 
 ## 4 Development manual
@@ -195,16 +193,20 @@ https://github.com/s1tools/mbu_processor
 
 Under construction
 
-### 4.4 Process to build the RPM
+### 4.4 Process to build the docker image
 
-Create the docker image from 
+Create the docker image with
 ```
-scripts/Dockerfile_build_MBU_RPM_c6_py3
-cd scripts
+# build the mbu python package
+python3 setup.py bdist_wheel
 
-$ # Cent OS 7
-$ make build_rpm
+# finally build the docker image
+docker build -t mbu:${VERSION} .
+
+# save the docker image
+docker image save -o mbu_processor_v${VERSION}.tar mbu:${VERSION}
 ```
+
 ### 4.5 Validation Plan
 
 Refer to document [Validation Plan](./MBU_test_plan.md)
