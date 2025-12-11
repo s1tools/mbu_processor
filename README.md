@@ -1,5 +1,4 @@
-About MBU
----------
+# About MBU
 
 MBU is a tool used to convert Sentinel-1 Level 2 products (OCN) of wave mode acquisitions (WV) into BUFR format.
 
@@ -10,8 +9,7 @@ The tool convert every NetCDF file into one BUFR file.
 The expected mapping between NetCDF variables and BUFR tables is provided in doc/BUFR_variable_mapping.csv
 
 
-Usage
------
+# Usage
 
 MBU is designed to be operated as an "ESA processor" and thus complies with the ESA Generic IPF ICD.
 
@@ -21,24 +19,31 @@ Those Tasks Tables have to be considered by a Management Layer (not provided her
 
 The Job Orders are the real inputs of MBU.
 
-Roadmap
--------
+## Environment variables
+
+| name                  | usage                        | default value  |
+| --------------------- |------------------------------|----------------|
+| MBU_PROCESSING_CENTER | set the processing center    | 98             |
+| MBU_DATA_CATEGORY     | set the category of the data | 0              |
+| MBU_DATA_SUB_CATEGORY | set the sub category         | 176            |
+
+for more details on possible values see the ECCODES tables [here](https://confluence.ecmwf.int/display/ECC/BUFR+tables)
+
+# Roadmap
 
 Some elements of planned evolutions of the tool are presented in [roadmap.md](roadmap.md).
 
-Documentation
--------------
+# Documentation
 
 Extended documentation of the MBU processor are provided in the doc directory.
 
 
-License
--------
+# License
+
 
 Distributed under the MIT License. See LICENSE.txt for more information.
 
-Contributing
-------------
+# Contributing
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 
